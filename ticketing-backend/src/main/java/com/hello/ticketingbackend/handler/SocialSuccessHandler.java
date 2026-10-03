@@ -24,6 +24,7 @@ public class SocialSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
 
         String username =  authentication.getName();
+        System.out.println("username = " + username);
         String role = authentication.getAuthorities().iterator().next().getAuthority();
 
         // JWT(Refresh) 발급

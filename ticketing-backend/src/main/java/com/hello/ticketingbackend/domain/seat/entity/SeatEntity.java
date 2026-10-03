@@ -1,12 +1,16 @@
 package com.hello.ticketingbackend.domain.seat.entity;
 
 import com.hello.ticketingbackend.domain.concert.entity.ConcertEntity;
+import com.hello.ticketingbackend.domain.ticket.entity.TicketEntity;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -17,9 +21,13 @@ public class SeatEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "concert_id")
     private ConcertEntity concert;
+
+
+    @OneToOne(mappedBy = "seat", cascade = CascadeType.REMOVE)
+    private TicketEntity ticket;
 
     private Boolean isOccupied = false;
 

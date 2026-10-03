@@ -3,12 +3,15 @@ package com.hello.ticketingbackend.domain.ticket.service;
 import com.hello.ticketingbackend.domain.seat.entity.SeatEntity;
 import com.hello.ticketingbackend.domain.seat.repository.SeatRepository;
 import com.hello.ticketingbackend.domain.ticket.dto.TicketRequest;
+import com.hello.ticketingbackend.domain.ticket.dto.TicketResponse;
 import com.hello.ticketingbackend.domain.ticket.entity.TicketEntity;
 import com.hello.ticketingbackend.domain.ticket.repository.TicketRepository;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import com.hello.ticketingbackend.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -37,6 +40,12 @@ public class TicketService {
             throw new IllegalAccessException("본인의 티켓만 삭제 가능합니다.");
         }
         ticketRepository.delete(ticket);
+    }
+
+    public List<TicketResponse> readTicket(Long userId) {
+        return ticketRepository.findByuserId(userId).stream()
+                .map(TicketResponse::from)
+                .toList();
     }
 
 

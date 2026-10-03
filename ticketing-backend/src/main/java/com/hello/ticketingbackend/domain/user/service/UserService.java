@@ -1,13 +1,17 @@
 package com.hello.ticketingbackend.domain.user.service;
 
 import com.hello.ticketingbackend.domain.jwt.service.JwtService;
+import com.hello.ticketingbackend.domain.user.dto.CustomOAuth2User;
 import com.hello.ticketingbackend.domain.user.dto.UserRequestDTO;
 import com.hello.ticketingbackend.domain.user.dto.UserResponseDTO;
+import com.hello.ticketingbackend.domain.user.entity.SocialProviderType;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import com.hello.ticketingbackend.domain.user.entity.UserRoleType;
 import com.hello.ticketingbackend.domain.user.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;
@@ -15,13 +19,20 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
+import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
+import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
 
 import java.nio.file.AccessDeniedException;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class UserService implements UserDetailsService {
+public class UserService extends DefaultOAuth2UserService implements UserDetailsService {
 
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
@@ -111,5 +122,59 @@ public class UserService implements UserDetailsService {
                 .password(entity.getPassword())
                 .roles(entity.getRoleType().name())
                 .build();
+    }
+
+    @Override
+    public OAuth2User loadUser(OAuth2UserRequest userRequest) throws OAuth2AuthenticationException {
+        OAuth2User oAuth2User = super.loadUser(userRequest);
+        Map<String, Object> attributes;
+        List<GrantedAuthority> authorities;
+
+        String username;
+        String role = UserRoleType.USER.name();
+        String email = null;
+        String nickname;
+
+        String registrationId = userRequest.getClientRegistration().getRegistrationId().toUpperCase();
+        if (registrationId.equals(SocialProviderType.NAVER.name())) {
+            attributes = (Map<String, Object>) oAuth2User.getAttributes().get("response");
+            username = registrationId + "_" + attributes.get("id");
+            email = attributes.get("email").toString();
+            nickname = attributes.get("nickname").toString();
+        } else if (registrationId.equals(SocialProviderType.GOOGLE.name())) {
+            attributes = (Map<String, Object>) oAuth2User.getAttributes();
+            username = registrationId + "_" + attributes.get("sub");
+            email = attributes.get("email").toString();
+            nickname = attributes.get("name").toString();
+        } else {
+            throw new OAuth2AuthenticationException("지원하지 않는 소셜 로그인 입니다");
+        }
+
+        Optional<UserEntity> entity = userRepository.findByUsernameAndIsSocial(username, true);
+        if (entity.isPresent()) {
+            role = entity.get().getRoleType().name();
+
+            UserRequestDTO dto = new UserRequestDTO();
+            dto.setNickname(nickname);
+            dto.setEmail(email);
+            entity.get().updateUser(dto);
+
+            userRepository.save(entity.get());
+        } else {
+            UserEntity newUserEntity = UserEntity.builder()
+                    .username(username)
+                    .password("")
+                    .email(email)
+                    .isSocial(true)
+                    .socialProviderType(SocialProviderType.valueOf(registrationId))
+                    .roleType(UserRoleType.USER)
+                    .nickname(nickname)
+                    .build();
+
+            userRepository.save(newUserEntity);
+        }
+        authorities = List.of(new SimpleGrantedAuthority(role));
+
+        return new CustomOAuth2User(attributes, authorities, username);
     }
 }

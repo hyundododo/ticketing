@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -23,7 +24,7 @@ public class RefreshEntity {
     private Long id;
     @Column(name = "username", nullable = false)
     private String username;
-    @Column(name = "refresh", nullable = false)
+    @Column(name = "refresh", nullable = false,length = 500)
     private String refresh;
     @CreatedDate
     @Column(name = "created_date", updatable = false)

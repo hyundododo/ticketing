@@ -3,12 +3,15 @@ package com.hello.ticketingbackend.domain.seat.service;
 import com.hello.ticketingbackend.domain.concert.entity.ConcertEntity;
 import com.hello.ticketingbackend.domain.concert.repository.ConcertRepository;
 import com.hello.ticketingbackend.domain.seat.dto.SeatRequest;
+import com.hello.ticketingbackend.domain.seat.dto.SeatResponse;
 import com.hello.ticketingbackend.domain.seat.entity.SeatEntity;
 import com.hello.ticketingbackend.domain.seat.repository.SeatRepository;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import com.hello.ticketingbackend.domain.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +29,13 @@ public class SeatService {
 
 
         return seatRepository.save(seatEntity).getId();
+    }
+
+    public List<SeatResponse> readSeats(Long concertId) {
+        List<SeatResponse> list = seatRepository.findByConcertId(concertId).stream()
+                .map(SeatResponse::from)
+                .toList();
+        return list;
     }
 
 

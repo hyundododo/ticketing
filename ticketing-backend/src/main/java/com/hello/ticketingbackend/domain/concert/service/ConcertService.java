@@ -1,6 +1,7 @@
 package com.hello.ticketingbackend.domain.concert.service;
 
 import com.hello.ticketingbackend.domain.concert.dto.ConcertRequest;
+import com.hello.ticketingbackend.domain.concert.dto.ConcertResponse;
 import com.hello.ticketingbackend.domain.concert.entity.ConcertEntity;
 import com.hello.ticketingbackend.domain.concert.repository.ConcertRepository;
 import com.hello.ticketingbackend.domain.seat.entity.SeatEntity;
@@ -41,5 +42,13 @@ public class ConcertService {
                 .orElseThrow(IllegalArgumentException::new);
 
         concertRepository.delete(concertEntity);
+    }
+
+    public List<ConcertResponse> readConcerts() {
+        List<ConcertResponse> list = concertRepository.findAll().stream()
+                .map(ConcertResponse::from)
+                .toList();
+
+        return list;
     }
 }

@@ -1,0 +1,6 @@
+function ConcertList({ concerts, selectedId, onSelect, canDelete, onDelete, deletingConcertId }) {
+    if (!concerts.length) return <div className="empty-state"><strong>등록된 콘서트가 없습니다.</strong><p>관리자가 콘서트를 등록하면 이곳에서 선택할 수 있습니다.</p></div>
+    return <div className="concert-list">{concerts.map((concert, index) => { const title = concert.concertName || concert.name || 'Untitled Concert'; const deleting = deletingConcertId === concert.id; return <div className={`concert-item-wrapper ${selectedId === concert.id ? 'selected' : ''}`} key={concert.id}><button className={`concert-item poster-${index % 4} ${selectedId === concert.id ? 'selected' : ''}`} onClick={() => onSelect(concert)}><span className="poster-art"><span className="poster-kicker">LIVE / TICKETING</span><strong>{title}</strong><span className="poster-line" /><small>{concert.seatCount ? `${concert.seatCount} SEATS` : 'SEAT MAP OPEN'}</small><span className="poster-index">{String(index + 1).padStart(2, '0')}</span></span><span className="poster-footer"><span>{title}</span><small>{concert.seatCount ? `${concert.seatCount}석` : '좌석 확인'}</small></span></button>{canDelete && <button className="delete-concert" disabled={Boolean(deletingConcertId)} onClick={() => onDelete(concert)}>{deleting ? '삭제 중...' : '삭제'}</button>}</div> })}</div>
+}
+
+export default ConcertList

@@ -8,6 +8,9 @@ import com.hello.ticketingbackend.domain.ticket.entity.TicketEntity;
 import com.hello.ticketingbackend.domain.ticket.repository.TicketRepository;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import com.hello.ticketingbackend.domain.user.repository.UserRepository;
+import com.hello.ticketingbackend.exception.EntityNotFoundException;
+import com.hello.ticketingbackend.exception.ForbiddenException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,29 +22,27 @@ public class TicketService {
     private final TicketRepository ticketRepository;
     private final UserRepository userRepository;
     private final SeatRepository seatRepository;
-
+    @Transactional
     public Long createTicket(TicketRequest request) {
         UserEntity userEntity = userRepository.findById(request.getUserId())
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
 
         SeatEntity seatEntity = seatRepository.findById(request.getSeatId())
-                .orElseThrow(IllegalArgumentException::new);
-
-        seatEntity.occupy(); // 좌석 예매(좌석 선택 후 10분 동안 결제 안하면 취소시키는 로직 추가예정)
+                .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
 
         TicketEntity ticketEntity = new TicketEntity(userEntity,seatEntity);
         return ticketRepository.save(ticketEntity).getId();
     }
-
-    public void deleteTicket(Long ticketId, String username) throws IllegalAccessException {
+    @Transactional
+    public void deleteTicket(Long ticketId, String username){
         TicketEntity ticket = ticketRepository.findById(ticketId)
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
         if (!ticket.getUser().getUsername().equals(username)) {
-            throw new IllegalAccessException("본인의 티켓만 삭제 가능합니다.");
+            throw new ForbiddenException("본인의 티켓만 삭제 가능합니다.");
         }
         ticketRepository.delete(ticket);
     }
-
+    @Transactional
     public List<TicketResponse> readTicket(Long userId) {
         return ticketRepository.findByuserId(userId).stream()
                 .map(TicketResponse::from)

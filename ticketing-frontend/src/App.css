@@ -1,11 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
 
 :root {
-  --ink: #17201c;
-  --muted: #6c756f;
-  --line: #d9dfda;
-  --paper: #f5f7f3;
-  --lime: #d8ef61;
+  --ink: #18211d;
+  --muted: #68736c;
+  --line: #d7ded8;
+  --paper: #f7f8f4;
+  --lime: #d9ee68;
+  --coral: #e9775f;
   --white: #fff;
 }
 
@@ -15,9 +16,10 @@
 
 body {
   margin: 0;
-  background: var(--paper);
+  background: radial-gradient(circle at 86% 6%, rgba(217, 238, 104, .2), transparent 28rem), var(--paper);
   color: var(--ink);
   font-family: 'DM Sans', sans-serif;
+  -webkit-font-smoothing: antialiased;
 }
 
 button,
@@ -36,13 +38,17 @@ button {
 }
 
 .topbar {
-  height: 78px;
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  height: 76px;
   padding: 0 6vw;
   display: flex;
   align-items: center;
   gap: 45px;
   border-bottom: 1px solid var(--line);
-  background: rgba(245, 247, 243, .9);
+  background: rgba(247, 248, 244, .92);
+  backdrop-filter: blur(14px);
 }
 
 .brand {
@@ -62,7 +68,7 @@ button {
   width: 31px;
   height: 31px;
   border-radius: 50%;
-  background: var(--ink);
+  background: var(--coral);
   color: var(--lime);
   font-size: 17px;
 }
@@ -372,6 +378,18 @@ h1 em {
   white-space: nowrap;
 }
 
+.text-button strong {
+  display: inline-grid;
+  place-items: center;
+  min-width: 20px;
+  height: 20px;
+  margin-left: 4px;
+  border-radius: 50%;
+  background: var(--lime);
+  color: var(--ink);
+  font-size: 11px;
+}
+
 .operation-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -479,10 +497,107 @@ footer {
   }
 }
 
+.app-navigation {
+  justify-content: flex-end;
+  padding: 17px 0 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.app-navigation .text-button {
+  position: relative;
+  padding: 10px 2px 14px;
+  font-size: 13px;
+}
+
+.app-navigation .text-button.active {
+  color: var(--ink);
+  font-weight: 700;
+}
+
+.app-navigation .text-button.active::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 3px;
+  background: var(--coral);
+  content: '';
+}
+
+.account::before {
+  display: inline-block;
+  width: 7px;
+  height: 7px;
+  margin: 0 8px 1px 0;
+  border-radius: 50%;
+  background: var(--coral);
+  content: '';
+}
+
+.logout span {
+  display: inline-block;
+  margin-left: 4px;
+  transition: transform .2s ease;
+}
+
+.logout:hover span {
+  transform: translate(2px, -2px);
+}
+
+.concert-item {
+  transition: border-color .2s ease, transform .2s ease, background .2s ease;
+}
+
+.concert-item:hover:not(.selected) {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.seat {
+  transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease;
+}
+
+.seat:hover:not(:disabled) {
+  border-color: var(--ink);
+  transform: translateY(-2px);
+}
+
+.seat.selected {
+  box-shadow: 0 3px 0 var(--ink);
+}
+
+.empty-state strong {
+  font-family: 'Space Grotesk';
+}
+
+@media (max-width: 760px) {
+  .app-navigation {
+    justify-content: space-between;
+    gap: 10px;
+  }
+
+  .app-navigation .text-button {
+    flex: 1;
+    text-align: center;
+  }
+}
+
 .account {
   margin-left: auto;
   color: var(--muted);
   font-size: 13px;
+}
+
+.account-name {
+  border: 0;
+  background: transparent;
+  color: var(--ink);
+  font-weight: 700;
+  padding: 8px 0;
+}
+
+.account-name:hover {
+  text-decoration: underline;
 }
 
 .logout {
@@ -503,6 +618,62 @@ footer {
 .page-header h1 {
   font-size: clamp(36px, 5vw, 58px);
   margin: 0;
+}
+
+.user-page {
+  padding-bottom: 70px;
+}
+
+.profile-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  align-items: center;
+  gap: 30px;
+  max-width: 720px;
+  padding: 36px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  box-shadow: 14px 14px 0 #e2e8dd;
+}
+
+.profile-avatar {
+  display: grid;
+  place-items: center;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%;
+  background: var(--coral);
+  color: var(--lime);
+  font: 700 36px 'Space Grotesk';
+}
+
+.profile-details h2 {
+  margin: 0 0 25px;
+  font: 700 30px 'Space Grotesk';
+}
+
+.profile-details dl {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.profile-details dl div {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 15px;
+  border-top: 1px solid var(--line);
+  padding-top: 12px;
+}
+
+.profile-details dt {
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.profile-details dd {
+  margin: 0;
+  font-weight: 600;
 }
 
 .page-actions {
@@ -626,14 +797,24 @@ footer {
 
 .concert-list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+  gap: 16px;
+}
+
+.concert-item-wrapper {
+  position: relative;
+}
+
+.concert-item-wrapper .delete-concert {
+  position: absolute;
+  top: 10px;
+  right: 0;
+  z-index: 1;
 }
 
 .concert-item {
-  display: flex;
-  justify-content: space-between;
-  gap: 10px;
+  display: block;
+  overflow: hidden;
   padding: 0;
   border: 1px solid var(--line);
   background: var(--white);
@@ -644,6 +825,125 @@ footer {
 .concert-item.selected {
   border-color: var(--ink);
   background: var(--lime);
+}
+
+.poster-art {
+  position: relative;
+  display: flex;
+  min-height: 270px;
+  flex-direction: column;
+  justify-content: flex-end;
+  overflow: hidden;
+  padding: 22px;
+  background: #d9ee68;
+  color: var(--ink);
+  text-align: left;
+}
+
+.poster-art::before,
+.poster-art::after {
+  position: absolute;
+  border: 1px solid rgba(24, 33, 29, .3);
+  border-radius: 50%;
+  content: '';
+}
+
+.poster-art::before {
+  width: 190px;
+  height: 190px;
+  top: -55px;
+  right: -45px;
+  background: rgba(233, 119, 95, .9);
+}
+
+.poster-art::after {
+  width: 125px;
+  height: 125px;
+  top: -22px;
+  right: 22px;
+  border-width: 2px;
+}
+
+.poster-kicker,
+.poster-art small {
+  position: relative;
+  z-index: 1;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .14em;
+}
+
+.poster-art strong {
+  position: relative;
+  z-index: 1;
+  max-width: 86%;
+  margin: 12px 0 15px;
+  font: 600 29px/1 'Space Grotesk';
+  letter-spacing: -.02em;
+  overflow-wrap: anywhere;
+}
+
+.poster-line {
+  position: relative;
+  z-index: 1;
+  width: 42px;
+  height: 4px;
+  margin-bottom: 13px;
+  background: var(--ink);
+}
+
+.poster-index {
+  position: absolute;
+  z-index: 1;
+  top: 19px;
+  left: 22px;
+  font: 700 12px 'Space Grotesk';
+}
+
+.poster-footer {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 16px;
+  background: var(--white);
+  text-align: left;
+}
+
+.poster-footer span {
+  overflow: hidden;
+  font-size: 13px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.poster-footer small {
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+.poster-1 .poster-art {
+  background: #f3c9a9;
+}
+
+.poster-1 .poster-art::before {
+  background: #5f746b;
+}
+
+.poster-2 .poster-art {
+  background: #cbd9f1;
+}
+
+.poster-2 .poster-art::before {
+  background: #e9775f;
+}
+
+.poster-3 .poster-art {
+  background: #e5d5ef;
+}
+
+.poster-3 .poster-art::before {
+  background: #18211d;
 }
 
 .concert-select {
@@ -770,6 +1070,11 @@ footer {
 }
 
 .seat {
+  display: grid;
+  place-items: center;
+  min-width: 0;
+  padding: 0;
+  font: 600 11px 'Space Grotesk';
   aspect-ratio: 1;
   border: 1px solid var(--line);
   background: var(--white);
@@ -833,6 +1138,167 @@ footer {
   margin: 0;
 }
 
+.booking-options {
+  position: fixed;
+  z-index: 4;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(23, 32, 28, .42);
+}
+
+.booking-options-panel {
+  position: relative;
+  width: min(470px, 100%);
+  padding: 34px;
+  background: var(--white);
+  box-shadow: 10px 10px 0 rgba(216, 239, 97, .7);
+}
+
+.booking-options-panel h3 {
+  margin: 0 0 10px;
+  font: 600 28px 'Space Grotesk';
+}
+
+.booking-options-panel p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.modal-close {
+  position: absolute;
+  top: 17px;
+  right: 18px;
+  border: 0;
+  background: transparent;
+  color: var(--muted);
+  font-size: 25px;
+}
+
+.booking-options-actions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 25px;
+}
+
+.option-button {
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  border: 1px solid var(--line);
+  background: #f8faf6;
+  color: var(--ink);
+  text-align: left;
+}
+
+.option-button:hover,
+.option-button.emphasis {
+  border-color: var(--ink);
+  background: var(--lime);
+}
+
+.option-button span {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.cart-section,
+.payment-section {
+  padding-bottom: 60px;
+}
+
+.cart-list {
+  display: grid;
+  gap: 10px;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 24px 26px;
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+
+.cart-item h2 {
+  margin: 0 0 8px;
+  font: 600 22px 'Space Grotesk';
+}
+
+.cart-item p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.remove-button {
+  padding: 8px 12px;
+  border: 1px solid #d6aaa5;
+  background: transparent;
+  color: #a83232;
+  font-size: 12px;
+}
+
+.cart-summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 18px 20px;
+  background: var(--lime);
+}
+
+.cart-summary .dark-button {
+  margin: 0;
+}
+
+.payment-card {
+  max-width: 620px;
+  padding: 35px;
+  border: 1px solid var(--line);
+  background: var(--white);
+}
+
+.payment-card h2 {
+  margin: 0 0 28px;
+  font: 600 28px 'Space Grotesk';
+}
+
+.payment-items {
+  display: grid;
+  gap: 10px;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 15px 0;
+}
+
+.payment-items div {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  font-size: 13px;
+}
+
+.payment-placeholder {
+  display: grid;
+  gap: 7px;
+  margin: 25px 0;
+  padding: 20px;
+  background: #e9eee7;
+  font-weight: 700;
+}
+
+.payment-placeholder span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
+
 .loading-state {
   padding: 120px 0;
   text-align: center;
@@ -869,6 +1335,12 @@ footer {
   color: var(--muted);
   font-size: 12px;
   white-space: nowrap;
+}
+
+.ticket-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 14px;
 }
 
 @media (max-width: 760px) {
@@ -923,6 +1395,26 @@ footer {
   }
 
   .ticket-card {
+    align-items: start;
+    flex-direction: column;
+  }
+
+  .ticket-card-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .booking-options-actions {
+    grid-template-columns: 1fr;
+  }
+
+  .booking-options-panel,
+  .payment-card {
+    padding: 25px;
+  }
+
+  .cart-item,
+  .cart-summary {
     align-items: start;
     flex-direction: column;
   }

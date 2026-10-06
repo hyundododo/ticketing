@@ -8,6 +8,8 @@ import com.hello.ticketingbackend.domain.seat.entity.SeatEntity;
 import com.hello.ticketingbackend.domain.seat.repository.SeatRepository;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import com.hello.ticketingbackend.domain.user.repository.UserRepository;
+import com.hello.ticketingbackend.exception.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,24 +21,68 @@ public class SeatService {
     private final SeatRepository seatRepository;
     private final UserRepository userRepository;
     private final ConcertRepository concertRepository;
-
+    @Transactional
     public Long createSeat(SeatRequest request) {
 
         ConcertEntity concertEntity = concertRepository.findById(request.getConcertId())
-                .orElseThrow(IllegalArgumentException::new);
+                .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
 
         SeatEntity seatEntity = new SeatEntity(concertEntity);
 
 
         return seatRepository.save(seatEntity).getId();
     }
-
+    @Transactional()
     public List<SeatResponse> readSeats(Long concertId) {
         List<SeatResponse> list = seatRepository.findByConcertId(concertId).stream()
                 .map(SeatResponse::from)
                 .toList();
         return list;
     }
+    @Transactional
+    public void hold(Long seatId) {
+        SeatEntity seat = seatRepository.findById(seatId)
+                .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
+        seat.hold();
+    }
+
+    @Transactional
+    public void release(Long seatId) {
+        SeatEntity seat = seatRepository.findById(seatId)
+                .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
+        seat.release();
+    }
+
+    @Transactional
+    public void confirm(Long seatId) {
+        SeatEntity seat = seatRepository.findById(seatId)
+                .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
+        seat.confirm();
+    }
+
+    @Transactional
+    public void cancel(Long seatId) {
+        SeatEntity seat = seatRepository.findById(seatId)
+                .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
+        seat.cancel();
+    }
+
+/*
+    @Transactional
+    public Long occupySeat(Long seatId) {
+        SeatEntity seat = seatRepository.findById(seatId)
+                .orElseThrow(IllegalArgumentException::new);
+        seat.occupy();
+        return seatId;
+    }
+    @Transactional
+    public Long vacancySeat(Long seatId) {
+        SeatEntity seat = seatRepository.findById(seatId)
+                .orElseThrow(IllegalArgumentException::new);
+        seat.vacancy();
+        return seatId;
+    }
+*/
 
 
 }

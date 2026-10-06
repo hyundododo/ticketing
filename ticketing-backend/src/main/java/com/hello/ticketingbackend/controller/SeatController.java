@@ -24,9 +24,30 @@ public class SeatController {
                 .body(seatService.createSeat(request));
     }
 
+    @PostMapping("/api/seats/{seatId}/hold")
+    public ResponseEntity<Void> holdSeat(@PathVariable Long seatId) {
+        seatService.hold(seatId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/api/seats/{seatId}/confirm")
+    public ResponseEntity<Void> confirmSeat(@PathVariable Long seatId) {
+        seatService.confirm(seatId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/api/seats/{seatId}/cancel")
+    public ResponseEntity<Void> cancelSeat(@PathVariable Long seatId) {
+        seatService.cancel(seatId);
+        return ResponseEntity.noContent().build();
+    }
+
+
     @GetMapping("/api/seats/{concertId}")
     public ResponseEntity<List<SeatResponse>> readSeats(@PathVariable Long concertId) {
         return ResponseEntity.ok().body(seatService.readSeats(concertId));
     }
+
+
 
 }

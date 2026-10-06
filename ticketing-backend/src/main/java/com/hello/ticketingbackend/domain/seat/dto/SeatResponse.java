@@ -6,17 +6,17 @@ import lombok.Getter;
 @Getter
 public class SeatResponse {
     private Long id;
-    private Boolean isOccupied = false;
+    private SeatStatus status;
 
-    public SeatResponse(Long id, Boolean isOccupied) {
+    public SeatResponse(Long id, SeatStatus status) {
         this.id = id;
-        this.isOccupied = isOccupied;
+        this.status = status;
     }
 
     public static SeatResponse from(SeatEntity entity) {
         return new SeatResponse(
                 entity.getId(),
-                entity.getIsOccupied()
+                entity.getStatus()
         );
     }
 }

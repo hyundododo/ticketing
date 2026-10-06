@@ -1,5 +1,6 @@
 package com.hello.ticketingbackend.controller;
 
+import com.hello.ticketingbackend.domain.seat.service.SeatService;
 import com.hello.ticketingbackend.domain.ticket.dto.TicketRequest;
 import com.hello.ticketingbackend.domain.ticket.dto.TicketResponse;
 import com.hello.ticketingbackend.domain.ticket.service.TicketService;
@@ -19,6 +20,7 @@ public class TicketController {
 
     private final TicketService ticketService;
     private final UserService userService;
+    private final SeatService seatService;
 
     @PostMapping("/api/tickets/{seatId}")
     public ResponseEntity<Long> createTicket(@PathVariable Long seatId, @AuthenticationPrincipal String username) {

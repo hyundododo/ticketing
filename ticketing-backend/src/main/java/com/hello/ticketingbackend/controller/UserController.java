@@ -35,7 +35,7 @@ public class UserController {
         return ResponseEntity.status(201).body(responseBody);
     }
 
-    @GetMapping(value = "/user", consumes = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/user")
     public UserResponseDTO userMeApi() {
         return userService.readUser();
     }

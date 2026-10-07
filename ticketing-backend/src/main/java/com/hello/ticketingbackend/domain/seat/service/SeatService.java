@@ -41,7 +41,7 @@ public class SeatService {
     }
     @Transactional
     public void hold(Long seatId) {
-        SeatEntity seat = seatRepository.findById(seatId)
+        SeatEntity seat = seatRepository.findByIdForUpdate(seatId)
                 .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
         seat.hold();
     }

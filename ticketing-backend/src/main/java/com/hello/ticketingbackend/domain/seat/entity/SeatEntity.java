@@ -4,6 +4,7 @@ import com.hello.ticketingbackend.domain.concert.entity.ConcertEntity;
 import com.hello.ticketingbackend.domain.seat.dto.SeatStatus;
 import com.hello.ticketingbackend.domain.ticket.entity.TicketEntity;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
+import com.hello.ticketingbackend.exception.SeatAlreadyHeldException;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -51,7 +52,7 @@ public class SeatEntity {
                 && this.heldUntil != null
                 && this.heldUntil.isBefore(LocalDateTime.now());
         if (!this.status.equals(SeatStatus.AVAILABLE) && !isExpired) {
-            throw new IllegalStateException("AVAILABLE 상태가 아니거나 만료되었습니다.");
+            throw new SeatAlreadyHeldException("이미 선택된 좌석입니다.");
         }
         this.status = SeatStatus.HELD;
         this.heldUntil = LocalDateTime.now().plusMinutes(1); // 테스트용으로 1분 설정

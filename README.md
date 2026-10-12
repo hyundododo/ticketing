@@ -1,14 +1,13 @@
-# 프로젝트 이름
+# 명당
 
-> 프로젝트를 한 줄로 소개해 주세요. (예: 누구나 글을 쓰고 댓글을 남길 수 있는 REST API 기반 게시판)
-
+> 공연 예매 시스템
 <!-- 배포했다면 링크, 시연 GIF나 대표 스크린샷을 여기에 넣으세요 -->
 
 <br>
 
 ## 📌 프로젝트 소개
 
-- **개발 기간**: YYYY.MM.DD ~ YYYY.MM.DD
+- **개발 기간**: 2026.10.03 ~ 현재
 - **개발 인원**: 1명 (개인 프로젝트)
 - **만든 이유**: 이 프로젝트를 왜 시작했는지, 무엇을 학습하고 싶었는지
 
@@ -18,12 +17,12 @@
 
 | 구분 | 기술 |
 | --- | --- |
-| Language | Java 17 |
-| Framework | Spring Boot x.x |
-| Persistence | JPA / MyBatis |
-| Database | MySQL / H2 |
+| Language | Java 21 |
+| Framework | Spring Boot 4.1.1 |
+| Persistence | JPA |
+| Database | MySQL |
 | Build Tool | Gradle |
-| Frontend | Thymeleaf / React (해당하는 경우) |
+| Frontend | React |
 | Etc. | Git, GitHub, IntelliJ |
 
 <br>
@@ -32,16 +31,15 @@
 
 ### 회원
 - [ ] 회원가입 / 로그인 / 로그아웃
-- [ ] 세션(또는 JWT) 기반 인증
+- [ ] JWT 기반 인증
 
-### 게시글
-- [ ] 게시글 작성 / 조회 / 수정 / 삭제
-- [ ] 목록 페이징, 검색
-- [ ] 작성자 본인만 수정/삭제 가능
+### 공연
+- [ ] 공연 생성 / 조회 / 삭제
+- [ ] 관리자만 공연 삭제 가능
 
-### 기타
-- [ ] 전역 예외 처리 (`@RestControllerAdvice`)
-- [ ] 입력값 검증 (Bean Validation)
+### 예매
+- [ ] 예매 티켓 조회 / 삭제
+- [ ] 장바구니 / 결제
 
 <br>
 

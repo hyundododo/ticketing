@@ -21,7 +21,6 @@ public class TicketController {
     private final TicketService ticketService;
     private final UserService userService;
     private final SeatService seatService;
-
     @PostMapping("/api/tickets/{seatId}")
     public ResponseEntity<Long> createTicket(@PathVariable Long seatId, @AuthenticationPrincipal String username) {
         Long userId = userService.findByUsername(username);

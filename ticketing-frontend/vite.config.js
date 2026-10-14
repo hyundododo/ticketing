@@ -21,6 +21,7 @@ export default defineConfig({
       },
       '/jwt': 'http://localhost:8080',
       '/oauth2': 'http://localhost:8080',
+      '/waiting': 'http://localhost:8080',
     },
   },
 })

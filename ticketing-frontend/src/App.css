@@ -1,13 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap');
-
 :root {
-  --ink: #18211d;
-  --muted: #68736c;
-  --line: #d7ded8;
-  --paper: #f7f8f4;
-  --lime: #d9ee68;
-  --coral: #e9775f;
+  --ink: #1c1c1e;
+  --muted: #6e6e73;
+  --line: #d1d1d6;
+  --paper: #f2f2f7;
+  --lime: #0a84ff;
+  --coral: #ff3b30;
   --white: #fff;
+  --surface: #ffffff;
 }
 
 * {
@@ -16,9 +15,9 @@
 
 body {
   margin: 0;
-  background: radial-gradient(circle at 86% 6%, rgba(217, 238, 104, .2), transparent 28rem), var(--paper);
+  background: var(--paper);
   color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
   -webkit-font-smoothing: antialiased;
 }
 
@@ -41,14 +40,14 @@ button {
   position: sticky;
   top: 0;
   z-index: 3;
-  height: 76px;
-  padding: 0 6vw;
+  min-height: 72px;
+  padding: 12px 6vw;
   display: flex;
   align-items: center;
-  gap: 45px;
-  border-bottom: 1px solid var(--line);
-  background: rgba(247, 248, 244, .92);
-  backdrop-filter: blur(14px);
+  gap: 24px;
+  border-bottom: 1px solid rgba(60, 60, 67, .15);
+  background: rgba(242, 242, 247, .92);
+  backdrop-filter: saturate(180%) blur(20px);
 }
 
 .brand {
@@ -56,21 +55,22 @@ button {
   background: none;
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 9px;
   color: var(--ink);
-  font: 700 20px 'Space Grotesk';
+  font-size: 20px;
+  font-weight: 700;
   padding: 0;
 }
 
 .brand-mark {
   display: grid;
   place-items: center;
-  width: 31px;
-  height: 31px;
-  border-radius: 50%;
-  background: var(--coral);
-  color: var(--lime);
-  font-size: 17px;
+  width: 32px;
+  height: 32px;
+  border-radius: 10px;
+  background: var(--lime);
+  color: var(--white);
+  font-size: 16px;
 }
 
 .nav-links {
@@ -103,6 +103,14 @@ button {
   border: 1px solid var(--ink);
   background: transparent;
   color: var(--ink);
+}
+
+button {
+  transition: opacity .2s ease, background-color .2s ease, border-color .2s ease, transform .2s ease;
+}
+
+button:active {
+  transform: scale(.98);
 }
 
 main {
@@ -138,7 +146,7 @@ p {
 }
 
 h1 {
-  font: 700 clamp(40px, 5vw, 68px)/1.06 'Space Grotesk';
+  font: 700 clamp(40px, 5vw, 68px)/1.06 -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
   letter-spacing: 0;
   margin-bottom: 25px;
 }
@@ -173,7 +181,8 @@ h1 em {
   background: var(--white);
   padding: 32px;
   border: 1px solid var(--line);
-  box-shadow: 14px 14px 0 #e2e8dd;
+  border-radius: 18px;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .08);
 }
 
 .tabs {
@@ -210,8 +219,9 @@ h1 em {
 .field input {
   width: 100%;
   border: 1px solid var(--line);
-  padding: 13px;
-  background: #fbfcfa;
+  padding: 13px 14px;
+  border-radius: 10px;
+  background: var(--white);
   color: var(--ink);
   outline: 0;
 }
@@ -225,6 +235,7 @@ h1 em {
   width: 100%;
   padding: 14px 17px;
   border: 0;
+  border-radius: 12px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -233,7 +244,7 @@ h1 em {
 
 .primary-button {
   background: var(--lime);
-  color: var(--ink);
+  color: var(--white);
   margin-top: 9px;
 }
 
@@ -245,24 +256,48 @@ h1 em {
 .notice {
   position: fixed;
   z-index: 5;
-  top: 94px;
+  top: 88px;
   left: 50%;
   transform: translateX(-50%);
-  padding: 13px 17px;
-  background: var(--ink);
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: min(320px, calc(100vw - 32px));
+  max-width: calc(100vw - 32px);
+  padding: 15px 14px 15px 17px;
+  border-radius: 12px;
+  background: #1c1c1e;
   color: white;
-  box-shadow: 5px 5px 0 var(--lime);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .16);
 }
 
 .notice.error {
   background: #a83232;
 }
 
-.notice button {
-  margin-left: 20px;
+.notice span {
+  flex: 1;
+}
+
+.notice-close {
+  display: grid;
+  flex: 0 0 24px;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  padding: 0 0 2px;
   border: 0;
-  background: none;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .14);
   color: inherit;
+  font-size: 20px;
+  font-weight: 300;
+  line-height: 1;
+}
+
+.notice-close:hover {
+  background: rgba(255, 255, 255, .24);
 }
 
 .dashboard,
@@ -304,18 +339,20 @@ h1 em {
   min-height: 190px;
   text-align: left;
   padding: 23px;
-  background: var(--white);
+  background: var(--surface);
   border: 1px solid var(--line);
+  border-radius: 16px;
   color: var(--ink);
   display: flex;
   flex-direction: column;
   gap: 8px;
-  transition: transform .2s, background .2s;
+  transition: transform .2s, background .2s, box-shadow .2s;
 }
 
 .action-card:hover {
-  transform: translateY(-4px);
-  background: var(--lime);
+  transform: translateY(-2px);
+  background: var(--surface);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, .08);
 }
 
 .card-number {
@@ -346,7 +383,9 @@ h1 em {
   align-items: center;
   gap: 30px;
   padding: 28px;
-  background: #e9eee7;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 16px;
 }
 
 .profile-card h2,
@@ -399,6 +438,7 @@ h1 em {
 .operation {
   background: var(--white);
   border: 1px solid var(--line);
+  border-radius: 16px;
   padding: 27px;
 }
 
@@ -424,7 +464,8 @@ h1 em {
 .result-box {
   margin-top: 20px;
   padding: 18px 20px;
-  background: var(--lime);
+  background: #e5f1ff;
+  border-radius: 12px;
   display: flex;
   justify-content: space-between;
   gap: 20px;
@@ -440,7 +481,7 @@ footer {
   padding: 25px 6vw;
   color: #89918b;
   font-size: 11px;
-  border-top: 1px solid var(--line);
+  border-top: 1px solid rgba(60, 60, 67, .15);
 }
 
 @media (max-width: 760px) {
@@ -802,6 +843,8 @@ footer {
 }
 
 .concert-item-wrapper {
+  display: flex;
+  min-width: 0;
   position: relative;
 }
 
@@ -814,6 +857,7 @@ footer {
 
 .concert-item {
   display: block;
+  width: 100%;
   overflow: hidden;
   padding: 0;
   border: 1px solid var(--line);
@@ -830,7 +874,8 @@ footer {
 .poster-art {
   position: relative;
   display: flex;
-  min-height: 270px;
+  height: 270px;
+  box-sizing: border-box;
   flex-direction: column;
   justify-content: flex-end;
   overflow: hidden;
@@ -992,8 +1037,84 @@ footer {
 }
 
 .seat-section {
+  position: relative;
   border-top: 1px solid var(--line);
   padding: 30px 0 60px;
+}
+
+.seat-modal {
+  position: fixed;
+  z-index: 3;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  overflow-y: auto;
+  padding: 24px;
+  background: rgba(23, 32, 28, .42);
+}
+
+.seat-modal .seat-section {
+  width: min(920px, 100%);
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+  padding: 34px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  box-shadow: 10px 10px 0 rgba(216, 239, 97, .7);
+}
+
+.seat-modal-close {
+  z-index: 1;
+}
+
+.waiting-modal {
+  position: fixed;
+  z-index: 4;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(23, 32, 28, .42);
+}
+
+.waiting-panel {
+  position: relative;
+  width: min(470px, 100%);
+  padding: 34px;
+  border: 1px solid var(--line);
+  background: var(--white);
+  box-shadow: 10px 10px 0 rgba(216, 239, 97, .7);
+}
+
+.waiting-panel h2 {
+  margin: 8px 0 12px;
+}
+
+.waiting-description {
+  color: var(--muted);
+}
+
+.waiting-rank {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin: 26px 0 18px;
+  padding: 20px;
+  background: var(--lime);
+}
+
+.waiting-rank strong {
+  font-size: 42px;
+  line-height: .9;
+}
+
+.waiting-rank small {
+  margin-left: 4px;
+  font-size: 14px;
+}
+
+.waiting-cancel {
+  margin-top: 24px;
 }
 
 .seat-grid {
@@ -1418,4 +1539,151 @@ footer {
     align-items: start;
     flex-direction: column;
   }
+}
+
+/* iOS-inspired surfaces and controls */
+.outline-button,
+.ghost-button,
+.social-button,
+.option-button,
+.remove-button,
+.delete-concert {
+  border-radius: 10px;
+}
+
+.outline-button:hover,
+.ghost-button:hover,
+.text-button:hover,
+.logout:hover {
+  opacity: .7;
+}
+
+.auth-form,
+.auth-panel,
+.profile-card,
+.payment-card,
+.cart-item,
+.ticket-card,
+.empty-state,
+.concert-item,
+.seat-modal .seat-section,
+.booking-options-panel {
+  border-radius: 18px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .06);
+}
+
+.auth-form,
+.auth-panel,
+.payment-card {
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .08);
+}
+
+.profile-avatar {
+  background: var(--lime);
+  color: var(--white);
+}
+
+.admin-panel,
+.payment-placeholder,
+.venue-map {
+  border-radius: 16px;
+  background: #e5e5ea;
+}
+
+.admin-panel {
+  border: 1px solid var(--line);
+}
+
+.concert-item:hover:not(.selected) {
+  border-color: var(--lime);
+  transform: translateY(-2px);
+}
+
+.concert-item.selected {
+  border-color: var(--lime);
+  background: #e5f1ff;
+}
+
+.poster-art,
+.poster-1 .poster-art,
+.poster-2 .poster-art,
+.poster-3 .poster-art {
+  border-radius: 17px 17px 0 0;
+  background: #dbeafe;
+}
+
+.poster-1 .poster-art {
+  background: #fee2e2;
+}
+
+.poster-2 .poster-art {
+  background: #e0e7ff;
+}
+
+.poster-3 .poster-art {
+  background: #f3e8ff;
+}
+
+.poster-art::before {
+  background: rgba(10, 132, 255, .18);
+}
+
+.poster-1 .poster-art::before {
+  background: rgba(255, 59, 48, .18);
+}
+
+.poster-2 .poster-art::before {
+  background: rgba(88, 86, 214, .18);
+}
+
+.poster-3 .poster-art::before {
+  background: rgba(175, 82, 222, .18);
+}
+
+.poster-footer {
+  border-radius: 0 0 17px 17px;
+}
+
+.seat {
+  border-radius: 8px;
+}
+
+.seat.selected,
+.legend-seat.selected {
+  border-color: var(--lime);
+  background: var(--lime);
+  color: var(--white);
+  box-shadow: none;
+}
+
+.seat.occupied,
+.legend-seat.occupied {
+  background: #d1d1d6;
+}
+
+.stage {
+  border-radius: 0 0 24px 24px;
+  background: #1c1c1e;
+  color: #b8dfff;
+  box-shadow: none;
+}
+
+.booking-bar,
+.cart-summary {
+  border-radius: 14px;
+  background: #e5f1ff;
+}
+
+.cart-item,
+.ticket-card {
+  background: var(--surface);
+}
+
+.remove-button {
+  border-color: #ffb4ae;
+  color: var(--coral);
+}
+
+.loading-state {
+  color: var(--muted);
 }

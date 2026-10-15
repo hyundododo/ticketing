@@ -43,7 +43,7 @@ public class SeatController {
     }
 
 
-    @GetMapping("/api/seats/{concertId}")
+    @GetMapping("/api/concerts/{concertId}/seats")
     public ResponseEntity<List<SeatResponse>> readSeats(@PathVariable Long concertId) {
         return ResponseEntity.ok().body(seatService.readSeats(concertId));
     }

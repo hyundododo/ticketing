@@ -15,7 +15,7 @@ public class QueueScheduler {
     private int count;
 
 
-    @Scheduled(fixedRate = 1000)
+    @Scheduled(fixedRate = 4000)
     public void processQueue() {
         List<String> users = waitingService.popMin(count);
         for (String user : users) {

@@ -24,6 +24,8 @@
 | Build Tool | Gradle |
 | Frontend | React |
 | Cache | Redis |
+| Container | Docker, Docker Compose | 
+| Deployment / Infrastructure | AWS EC2, Nginx |
 | Etc. | Git, GitHub, IntelliJ |
 
 <br>
@@ -44,43 +46,6 @@
 
 <br>
 
-## 🚀 실행 방법
-
-### 1. 사전 준비
-- JDK 17 이상
-- MySQL 8.x (H2 사용 시 불필요)
-
-### 2. 프로젝트 클론
-
-```bash
-git clone https://github.com/{username}/{repository}.git
-cd {repository}
-```
-
-### 3. 설정 파일 작성
-
-`src/main/resources/application.yml`을 아래 형식으로 작성합니다.
-
-```yaml
-spring:
-  datasource:
-    url: jdbc:mysql://localhost:3306/{db_name}
-    username: {username}
-    password: {password}
-```
-
-> ⚠️ DB 비밀번호 같은 민감 정보는 커밋하지 마세요. `application-example.yml`을 만들어 두고 실제 설정 파일은 `.gitignore`에 추가하는 것을 추천합니다.
-
-### 4. 실행
-
-```bash
-./gradlew bootRun
-```
-
-실행 후 `http://localhost:8080` 으로 접속합니다.
-
-<br>
-
 ## 📂 프로젝트 구조
 
 ```
@@ -98,9 +63,10 @@ src/main/java/com/example/project
 
 ## 🗄 ERD
 
-<!-- ERD 이미지를 첨부하세요 (dbdiagram.io, ERDCloud 등으로 제작) -->
 
-![ERD](./docs/erd.png)
+
+<img width="1468" height="1124" alt="image" src="https://github.com/user-attachments/assets/248d9eb4-5591-497c-b4ae-dbee61a4b1d6" />
+
 
 <br>
 

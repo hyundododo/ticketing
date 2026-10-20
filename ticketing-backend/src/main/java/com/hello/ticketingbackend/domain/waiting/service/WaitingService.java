@@ -14,7 +14,7 @@ import java.util.Set;
 public class WaitingService {
     private final StringRedisTemplate redisTemplate;
     private static final String QUEUE_KEY = "waiting_queue";
-    private static final long ALLOW_TTL_SECONDS = 60; // 실제 서비스에서는 3~5분 정도
+    private static final long ALLOW_TTL_SECONDS = 300; // 실제 서비스에서는 3~5분 정도
 
     public WaitingService(StringRedisTemplate redisTemplate) {
         this.redisTemplate = redisTemplate;

@@ -31,8 +31,8 @@ public class SeatEntity {
     private ConcertEntity concert;
 
 
-    @OneToOne(mappedBy = "seat", cascade = CascadeType.REMOVE)
-    private TicketEntity ticket;
+/*    @OneToOne(mappedBy = "seat", cascade = CascadeType.REMOVE)
+    private TicketEntity ticket;*/
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)

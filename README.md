@@ -23,6 +23,7 @@
 | Database | MySQL |
 | Build Tool | Gradle |
 | Frontend | React |
+| Cache | Redis |
 | Etc. | Git, GitHub, IntelliJ |
 
 <br>

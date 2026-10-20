@@ -49,15 +49,66 @@
 ## 📂 프로젝트 구조
 
 ```
-src/main/java/com/example/project
-├── controller    # 요청/응답 처리
-├── service       # 비즈니스 로직
-├── repository    # DB 접근
-├── domain        # 엔티티
-├── dto           # 요청/응답 DTO
-├── exception     # 커스텀 예외, 전역 예외 처리
-└── config        # 설정, 인터셉터
+ticketing/
+├── README.md
+├── ticketing-backend/
+│   ├── build.gradle
+│   ├── docker-compose.yaml       # MySQL, Redis 컨테이너
+│   └── src/
+│       ├── main/
+│       │   ├── java/com/hello/ticketingbackend/
+│       │   │   ├── TicketingBackendApplication.java
+│       │   │   ├── config/       # Spring, Security, Redis, 스케줄러 설정
+│       │   │   ├── controller/   # REST API 엔드포인트
+│       │   │   ├── domain/       # 도메인별 비즈니스 모듈
+│       │   │   │   ├── user/     # 회원 및 소셜 로그인
+│       │   │   │   ├── jwt/      # JWT 및 refresh token
+│       │   │   │   ├── concert/  # 공연 관리
+│       │   │   │   ├── seat/     # 좌석 조회 및 점유
+│       │   │   │   ├── cart/     # 장바구니 및 좌석 홀드
+│       │   │   │   ├── ticket/   # 예매 티켓
+│       │   │   │   └── waiting/  # 대기열 및 입장 스케줄러
+│       │   │   ├── exception/    # 예외 및 에러 응답
+│       │   │   ├── fillter/      # JWT, 로그인 필터
+│       │   │   ├── handler/      # 로그인 성공 및 전역 예외 처리
+│       │   │   ├── interceptor/  # 좌석 홀드 검증
+│       │   │   └── util/         # JWT 유틸리티
+│       │   └── resources/
+│       │       └── application.properties
+│       └── test/                 # 백엔드 테스트
+└── ticketing-frontend/
+    ├── package.json
+    ├── vite.config.js            # Vite 및 백엔드 프록시 설정
+    └── src/
+        ├── main.jsx              # 애플리케이션 진입점
+        ├── app/                  # 라우팅 및 앱 루트
+        ├── pages/                # 화면 단위 페이지
+        │   ├── AuthPage.jsx
+        │   ├── ConcertPage.jsx
+        │   ├── SeatPage.jsx
+        │   ├── CartPage.jsx
+        │   ├── PaymentPage.jsx
+        │   ├── TicketsPage.jsx
+        │   └── UserPage.jsx
+        ├── features/             # 기능 단위 모듈
+        │   ├── auth/             # 인증 API, 폼, 인증 훅
+        │   ├── concert/          # 공연 목록 및 조회
+        │   ├── seat/             # 좌석 맵, 좌석 상태, 예매
+        │   ├── cart/             # 장바구니
+        │   └── waiting/          # 대기열 모달 및 상태 조회
+        ├── shared/
+        │   ├── api/              # Axios 클라이언트 및 공통 API 설정
+        │   └── layout/           # 공통 레이아웃
+        ├── App.css               # 전역 컴포넌트 스타일
+        └── index.css             # 전역 기본 스타일
 ```
+
+### 구조 설계
+
+- **Backend**는 도메인별로 `dto`, `entity`, `repository`, `service`를 분리한 모듈형 구조입니다.
+- **Frontend**는 화면(`pages`)과 기능(`features`)을 분리하고, 각 기능에서 API·컴포넌트·훅을 함께 관리합니다.
+- **대기열**은 Redis 기반 백엔드 로직과 프론트엔드 대기 모달이 `waiting` 도메인으로 연결됩니다.
+- **인프라**는 `docker-compose.yaml`로 MySQL과 Redis를 함께 실행할 수 있습니다.
 
 <br>
 

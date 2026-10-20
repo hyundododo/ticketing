@@ -47,9 +47,10 @@ function WaitingModal({ concert, initialRank, onAllowed, onClose, onNotice }) {
     return <div className="waiting-modal" role="dialog" aria-modal="true" aria-labelledby="waiting-title">
         <section className="waiting-panel">
             <button className="seat-modal-close modal-close" onClick={close} aria-label="대기열 닫기">×</button>
+            <div className="waiting-icon" aria-hidden="true"><span /><span /><span /></div>
             <span className="eyebrow">WAITING ROOM</span>
             <h2 id="waiting-title">{concert.concertName || concert.name}</h2>
-            {error ? <div className="empty-state"><strong>{error}</strong><p>잠시 후 자동으로 다시 확인합니다.</p></div> : <><p className="waiting-description">현재 접속자가 많아 대기열에 등록되었습니다.</p><div className="waiting-rank"><span>내 대기 순서</span><strong>{rank ?? '-'}<small>번째</small></strong></div><p className="small-note">입장이 가능해지면 좌석 선택 화면으로 자동 이동합니다.</p></>}
+            {error ? <div className="empty-state"><strong>{error}</strong><p>잠시 후 자동으로 다시 확인합니다.</p></div> : <><p className="waiting-description">현재 접속자가 많아 대기열에 등록되었습니다.</p><div className="waiting-rank"><div><span>내 대기 순서</span><small>순서가 되면 자동으로 입장해요</small></div><strong>{rank ?? '-'}<small>번째</small></strong></div><p className="small-note"><span className="status-dot" aria-hidden="true" />대기열을 확인하고 있습니다</p></>}
             <button className="text-button waiting-cancel" onClick={close} disabled={leaving}>{leaving ? '나가는 중...' : '대기열 나가기'}</button>
         </section>
     </div>

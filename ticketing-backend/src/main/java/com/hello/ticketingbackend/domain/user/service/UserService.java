@@ -92,7 +92,8 @@ public class UserService extends DefaultOAuth2UserService implements UserDetails
         String sessionRole = context.getAuthentication().getAuthorities().iterator().next().getAuthority();
 
         boolean isOwner = sessionUsername.equals(dto.getUsername());
-        boolean isAdmin = sessionRole.equals("ROLE_" + UserRoleType.ADMIN.name());
+//        boolean isAdmin = sessionRole.equals("ROLE_" + UserRoleType.ADMIN.name()); NPE 발생 가능성
+        boolean isAdmin = ("ROLE_" + UserRoleType.ADMIN.name()).equals(sessionRole);
 
         if (!isOwner && !isAdmin) {
             throw new AccessDeniedException("본인 혹인 관리자만 삭제할 수 있습니다");

@@ -100,10 +100,10 @@ public class SecurityConfig {
                         .requestMatchers("/error").permitAll()
                         .requestMatchers("/jwt/exchange", "/jwt/refresh",
                                 "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/user/exist", "/user").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/user").hasRole(UserRoleType.USER.name())
-                        .requestMatchers(HttpMethod.PUT, "/user").hasRole(UserRoleType.USER.name())
-                        .requestMatchers(HttpMethod.DELETE, "/user").hasRole(UserRoleType.USER.name())
+                        .requestMatchers(HttpMethod.POST, "/api/user/exist", "/api/user").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/user").hasRole(UserRoleType.USER.name())
+                        .requestMatchers(HttpMethod.PUT, "/api/user").hasRole(UserRoleType.USER.name())
+                        .requestMatchers(HttpMethod.DELETE, "/api/user").hasRole(UserRoleType.USER.name())
                         .anyRequest().authenticated());
 
         http

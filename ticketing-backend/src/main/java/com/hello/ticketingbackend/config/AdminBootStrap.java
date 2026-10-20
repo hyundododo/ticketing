@@ -32,8 +32,6 @@ public class AdminBootStrap implements ApplicationRunner {
     @Override
     public void run(ApplicationArguments args) throws Exception {
 
-
-
         if (userRepository.existsByRoleType(UserRoleType.ADMIN)) {
             return;
         }

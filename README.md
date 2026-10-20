@@ -63,9 +63,10 @@ src/main/java/com/example/project
 
 ## 🗄 ERD
 
-<!-- ERD 이미지를 첨부하세요 (dbdiagram.io, ERDCloud 등으로 제작) -->
 
-![ERD](./docs/erd.png)
+
+<img width="1468" height="1124" alt="image" src="https://github.com/user-attachments/assets/248d9eb4-5591-497c-b4ae-dbee61a4b1d6" />
+
 
 <br>
 

@@ -4,19 +4,19 @@ import { check, sleep, fail } from 'k6';
 import { Trend, Counter } from 'k6/metrics';
 
 const BASE_URL = __ENV.BASE_URL || 'http://localhost:8080';
-const CONCERT_ID = __ENV.CONCERT_ID || '3';
+const CONCERT_ID = __ENV.CONCERT_ID || '7';
 const VUS = parseInt(__ENV.VUS || '1000', 10);
-const HOT_SEATS = parseInt(__ENV.HOT_SEATS || '20', 10);
-const SEAT_MIN = parseInt(__ENV.SEAT_MIN || '101', 10);
-const SEAT_MAX = parseInt(__ENV.SEAT_MAX || '1100', 10);
+const HOT_SEATS = parseInt(__ENV.HOT_SEATS || '1143', 10);
+const SEAT_MIN = parseInt(__ENV.SEAT_MIN || '1143', 10);
+const SEAT_MAX = parseInt(__ENV.SEAT_MAX || '2142', 10);
 const USE_QUEUE = (__ENV.USE_QUEUE || 'true') === 'true';
-const SIGNUP_PATH = __ENV.SIGNUP_PATH || '/user';
+const SIGNUP_PATH = __ENV.SIGNUP_PATH || '/api/user';
 const LOGIN_PATH = __ENV.LOGIN_PATH || '/login';
 const SIGNUP = (__ENV.SIGNUP || 'false') === 'true';
-const USER_PREFIX = __ENV.USER_PREFIX || 'loadtestt';
+const USER_PREFIX = __ENV.USER_PREFIX || 'test';
 const USER_PASSWORD = __ENV.USER_PASSWORD || 'password1234';
 
-const POLL_INTERVAL_SEC = 2;
+const POLL_INTERVAL_SEC = 5;
 const MAX_WAIT_SEC = 120;
 const BATCH_SIZE = 100;
 
@@ -96,6 +96,7 @@ export function setup() {
                 if (res.status >= 500) {
                     fail(
                         `회원가입 서버 오류: user=${userNumber}, status=${res.status}`
+                            `status=${res.status}, body=${res.body}`
                     );
                 }
             }

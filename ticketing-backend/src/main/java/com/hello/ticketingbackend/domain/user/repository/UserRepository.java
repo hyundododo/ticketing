@@ -1,6 +1,7 @@
 package com.hello.ticketingbackend.domain.user.repository;
 
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
+import com.hello.ticketingbackend.domain.user.entity.UserRoleType;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -15,4 +16,6 @@ public interface UserRepository extends JpaRepository<UserEntity,Long> {
     Boolean existsByUsername(String username);
 
     void deleteByUsername(String username);
+
+    Boolean existsByRoleType(UserRoleType roleType);
 }

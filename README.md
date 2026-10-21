@@ -344,10 +344,10 @@ k6 run `
 
 ### 테스트 결과 이미지
 
-![동일 좌석 경쟁 테스트 결과](./docs/images/same-seat-result.png)
+![동일 좌석 경쟁 테스트 결과](./docs/images/same-seat-test.png)
 
-![대기열 부하 테스트 결과1](./docs/images/queue-load-result(1).png)
-![대기열 부하 테스트 결과2](./docs/images/queue-load-result(2).png)
+![대기열 부하 테스트 결과1](./docs/images/queue-load-test(1).png)
+![대기열 부하 테스트 결과2](./docs/images/queue-load-test(2).png)
 
 ### 결과 분석 및 개선 사항
 

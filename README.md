@@ -279,9 +279,7 @@ ticketing/
 
 ```powershell
 k6 run `
-  -e BASE_URL=http://localhost:8080 `
-  -e SAME_VUS=100 `
-  -e TARGET_SEAT=42 `
+  -e BASE_URL=http://EC2 IP주소 `
   ticketing-backend/k6/same-seat-test.js
 ```
 
@@ -295,10 +293,7 @@ k6 run `
 
 ```powershell
 k6 run `
-  -e BASE_URL=http://localhost:8080 `
-  -e VUS=1000 `
-  -e CONCERT_ID=7 `
-  -e USE_QUEUE=true `
+  -e BASE_URL=http://EC2 IP주소 `
   ticketing-backend/k6/queue-load-test.js
 ```
 
@@ -308,8 +303,8 @@ k6 run `
 | --- | --- |
 | 테스트 도구 | k6 |
 | 테스트 스크립트 | `same-seat-test.js`, `queue-load-test.js` |
-| 테스트 일시 | YYYY-MM-DD |
-| 실행 환경 | 로컬 / Docker / AWS |
+| 테스트 일시 | 2026-10-20 |
+| 실행 환경 | 로컬 |
 | 대상 API | 대기열, 좌석 조회, `POST /api/seats/{seatId}/hold` |
 | 동시 사용자 수 | 동일 좌석 100명 / 부하 테스트 1,000명 |
 
@@ -320,27 +315,24 @@ k6 run `
 | 지표 | 결과 |
 | --- | --- |
 | 총 홀드 요청 수 | 100 |
-| 홀드 성공 수 (`hold_ok`) |  |
-| 충돌 응답 수 (`hold_conflict`) |  |
-| 기타 오류 수 (`hold_error`) |  |
-| 중복 점유 발생 여부 | 없음 / 있음 |
-| 요청 시작 편차 (`race_start_skew_ms`) |  |
+| 홀드 성공 수 (`hold_ok`) | 1 |
+| 충돌 응답 수 (`hold_conflict`) | 99 |
+| 기타 오류 수 (`hold_error`) | 0 |
+| 중복 점유 발생 여부 | 없음 |
 
 #### 대기열 및 좌석 선점 부하 테스트
 
 | 지표 | 결과 |
 | --- | --- |
 | 최대 VU | 1,000 |
-| 홀드 성공 수 (`hold_success`) |  |
-| 좌석 충돌 수 (`hold_conflict`) |  |
-| 기타 오류 수 (`hold_error`) |  |
-| 대기열 시간 초과 수 (`queue_timeout`) |  |
+| 홀드 성공 수 (`hold_success`) | 1000 |
+| 좌석 충돌 수 (`hold_conflict`) | 131 |
+| 기타 오류 수 (`hold_error`) | 0 |
+| 대기열 시간 초과 수 (`queue_timeout`) | 0 |
 | 매진 처리 수 (`sold_out`) |  |
-| 대기열 평균 대기 시간 (`queue_wait_time`) |  |
-| 상태 조회 `p(95)` |  |
-| 좌석 홀드 `p(95)` |  |
-
-> 위 결과 칸에는 k6 실행 결과의 실제 값을 기록합니다. `queue-load-test.js`는 상태 조회 `p(95) < 500ms`, 좌석 홀드 `p(95) < 1,000ms`, `hold_error = 0`, `queue_timeout = 0`을 통과 기준으로 설정합니다.
+| 대기열 평균 대기 시간 (`queue_wait_time`) | 19.91s |
+| 상태 조회 `p(95)` | 888.48ms |
+| 좌석 홀드 `p(95)` | 755.09ms |
 
 ### 테스트 결과 이미지
 
@@ -349,12 +341,6 @@ k6 run `
 ![동일 좌석 경쟁 테스트 결과](./docs/images/k6-same-seat-result.png)
 
 ![대기열 부하 테스트 결과](./docs/images/k6-queue-load-result.png)
-
-<!--
-이미지 파일 예시:
-- docs/images/k6-same-seat-result.png
-- docs/images/k6-queue-load-result.png
--->
 
 ### 결과 분석 및 개선 사항
 

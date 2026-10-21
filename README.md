@@ -329,7 +329,7 @@ k6 run `
 | 좌석 충돌 수 (`hold_conflict`) | 131 |
 | 기타 오류 수 (`hold_error`) | 0 |
 | 대기열 시간 초과 수 (`queue_timeout`) | 0 |
-| 매진 처리 수 (`sold_out`) |  |
+| 매진 처리 수 (`sold_out`) | 1000 |
 | 대기열 평균 대기 시간 (`queue_wait_time`) | 19.91s |
 | 상태 조회 `p(95)` | 888.48ms |
 | 좌석 홀드 `p(95)` | 755.09ms |

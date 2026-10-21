@@ -346,10 +346,9 @@ k6 run `
 
 실행 결과 캡처 이미지를 아래에 첨부합니다. 이미지를 저장소에 추가한 후 파일 경로를 연결해 사용하세요.
 
-![동일 좌석 경쟁 테스트 결과](./docs/images/same-seat-test.png)
-
-![대기열 부하 테스트 결과1](./docs/images/queue-load-test(1).png)
-![대기열 부하 테스트 결과2](./docs/images/queue-load-test(2).png)
+[동일 좌석 경쟁 테스트 결과](./docs/images/same-seat-test.png)
+[대기열 부하 테스트 결과1](./docs/images/queue-load-test(1).png)
+[대기열 부하 테스트 결과2](./docs/images/queue-load-test(2).png)
 
 <!--
 이미지 파일 예시:

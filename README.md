@@ -250,7 +250,7 @@ ticketing/
 
 <br>
 
-## 📈 동시성 테스트
+## 📈 K6 테스트
 
 좌석 예매 과정에서 여러 사용자가 동시에 요청하는 상황을 검증하기 위해 [k6](https://k6.io/)를 사용했습니다. 테스트 스크립트는 [ticketing-backend/k6/](C:/Users/guseh/OneDrive/바탕%20화면/ticketing/ticketing-backend/k6/)에 관리하고 있습니다.
 
@@ -336,11 +336,10 @@ k6 run `
 
 ### 테스트 결과 이미지
 
-실행 결과 캡처 이미지를 아래에 첨부합니다. 이미지를 저장소에 추가한 후 파일 경로를 연결해 사용하세요.
+![동일 좌석 경쟁 테스트 결과](./docs/images/same-seat-test.png)
 
-![동일 좌석 경쟁 테스트 결과](./docs/images/k6-same-seat-result.png)
-
-![대기열 부하 테스트 결과](./docs/images/k6-queue-load-result.png)
+![대기열 부하 테스트 결과1](./docs/images/queue-load-test(1).png)
+![대기열 부하 테스트 결과2](./docs/images/queue-load-test(2).png)
 
 ### 결과 분석 및 개선 사항
 

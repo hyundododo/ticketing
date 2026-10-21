@@ -33,16 +33,28 @@
 ## ✨ 주요 기능
 
 ### 회원
-- [ ] 회원가입 / 로그인 / 로그아웃
-- [ ] JWT 기반 인증
+- 회원가입, 로그인, 로그아웃
+- JWT Access Token / Refresh Token 기반 인증
+- 소셜 로그인(OAuth2) 지원
+- 내 정보 조회, 수정, 탈퇴
+- 아이디 중복 확인
 
 ### 공연
-- [ ] 공연 생성 / 조회 / 삭제
-- [ ] 관리자만 공연 삭제 가능
+- 공연 생성, 목록 조회, 삭제
+- 공연별 좌석 자동 생성
+- 공연별 좌석 상태 조회
+- 공연 관리 API 제공 (관리자 권한 검증 보완 예정)
 
-### 예매
-- [ ] 예매 티켓 조회 / 삭제
-- [ ] 장바구니 / 결제
+### 좌석 및 예매
+- 좌석 상태 관리: `AVAILABLE`(예매 가능), `HELD`(임시 점유), `SOLD`(판매 완료)
+- 좌석 홀드, 확정, 취소 처리
+- 장바구니에 좌석 추가 및 조회
+- 예매 티켓 생성, 조회, 취소
+
+### 대기열
+- Redis 기반 대기열 등록 및 퇴장
+- 현재 대기 순번 조회
+- 입장 가능 여부에 따른 `ALLOWED`, `WAITING`, `NONE` 상태 제공
 
 <br>
 
@@ -123,32 +135,114 @@ ticketing/
 
 ## 📑 API 명세
 
-| 기능 | Method | URL | 설명 |
-| --- | --- | --- | --- |
-| 게시글 목록 | GET | `/api/posts` | 페이징 조회 |
-| 게시글 상세 | GET | `/api/posts/{id}` | 단건 조회 |
-| 게시글 작성 | POST | `/api/posts` | 로그인 필요 |
-| 게시글 수정 | PUT | `/api/posts/{id}` | 작성자만 가능 |
-| 게시글 삭제 | DELETE | `/api/posts/{id}` | 작성자만 가능 |
+> 모든 API는 별도 표기가 없으면 `Authorization: Bearer {accessToken}` 헤더가 필요합니다.
+> 요청 및 응답 본문은 JSON 형식을 사용합니다. 인증이 필요한 API는 인증되지 않은 경우 `401 Unauthorized`, 권한이 부족한 경우 `403 Forbidden`을 반환합니다.
+
+### 인증 및 회원
+
+| 기능 | Method | URL | 인증 | 설명 |
+| --- | --- | --- | --- | --- |
+| 로그인 | POST | `/login` | 불필요 | 아이디와 비밀번호로 로그인하고 JWT를 발급합니다. |
+| 회원가입 | POST | `/api/user` | 불필요 | 신규 회원을 등록합니다. |
+| 아이디 중복 확인 | POST | `/api/user/exist` | 불필요 | 아이디 존재 여부를 `boolean`으로 반환합니다. |
+| JWT 교환 | POST | `/jwt/exchange` | 불필요 | 로그인 쿠키의 토큰을 헤더 응답 형식으로 교환합니다. |
+| JWT 갱신 | POST | `/jwt/refresh` | 불필요 | Refresh Token으로 Access Token을 갱신합니다. |
+| 내 정보 조회 | GET | `/api/user` | USER | 로그인한 사용자의 정보를 조회합니다. |
+| 회원정보 수정 | PUT | `/api/user` | USER | 닉네임, 이메일 등 회원정보를 수정합니다. |
+| 회원 탈퇴 | DELETE | `/api/user` | USER | 비밀번호 확인 후 회원을 탈퇴합니다. |
+
+### 공연 및 좌석
+
+| 기능 | Method | URL | 인증 | 설명 |
+| --- | --- | --- | --- | --- |
+| 공연 생성 | POST | `/api/concerts` | 필요 | 공연명과 좌석 수를 등록하고 공연 ID를 반환합니다. |
+| 공연 목록 조회 | GET | `/api/concerts` | 필요 | 등록된 공연 목록을 조회합니다. |
+| 공연 삭제 | DELETE | `/api/concerts/{concertId}` | 필요 | 공연을 삭제합니다. 관리자 권한 검증을 적용할 예정입니다. |
+| 좌석 생성 | POST | `/api/seats` | 필요 | 공연에 좌석을 생성합니다. |
+| 공연 좌석 조회 | GET | `/api/concerts/{concertId}/seats` | 필요 | 공연의 좌석 ID와 현재 상태를 조회합니다. |
+| 좌석 홀드 | POST | `/api/seats/{seatId}/hold` | 필요 | 예매를 위해 좌석을 임시 점유합니다. |
+| 좌석 확정 | POST | `/api/seats/{seatId}/confirm` | 필요 | 홀드된 좌석을 판매 완료 상태로 변경합니다. |
+| 좌석 홀드 취소 | POST | `/api/seats/{seatId}/cancel` | 필요 | 홀드된 좌석을 다시 예매 가능 상태로 변경합니다. |
+
+### 장바구니 및 예매
+
+| 기능 | Method | URL | 인증 | 설명 |
+| --- | --- | --- | --- | --- |
+| 장바구니 조회 | GET | `/api/items` | 필요 | 로그인한 사용자의 장바구니를 조회합니다. |
+| 장바구니 추가 | POST | `/api/items` | 필요 | 좌석을 장바구니에 추가합니다. |
+| 장바구니 항목 삭제 | DELETE | `/api/items` | 필요 | 결제 완료 후 장바구니 항목을 삭제합니다. |
+| 장바구니 항목 해제 | DELETE | `/api/items/release` | 필요 | 결제 전 항목을 삭제하고 좌석 홀드를 해제합니다. |
+| 티켓 생성 | POST | `/api/tickets/{seatId}` | 필요 | 로그인한 사용자의 좌석 예매 티켓을 생성합니다. |
+| 내 티켓 조회 | GET | `/api/tickets` | 필요 | 로그인한 사용자의 예매 내역을 조회합니다. |
+| 티켓 취소 | DELETE | `/api/tickets/{ticketId}` | 필요 | 예매 티켓을 취소합니다. |
+
+### 대기열
+
+| 기능 | Method | URL | 인증 | 설명 |
+| --- | --- | --- | --- | --- |
+| 대기열 입장 | POST | `/waiting/enter` | 필요 | 입장 가능 여부를 확인하고, 불가하면 대기열에 등록합니다. |
+| 대기열 상태 조회 | GET | `/waiting/status` | 필요 | `ALLOWED`, `WAITING`, `NONE` 상태와 대기 순번을 조회합니다. |
+| 대기열 나가기 | DELETE | `/waiting/delete` | 필요 | 현재 사용자를 대기열에서 제거합니다. |
 
 <details>
-<summary>요청/응답 예시 (펼치기)</summary>
+<summary>주요 요청/응답 예시 (펼치기)</summary>
 
-**POST `/api/posts`**
+**POST `/api/user` 회원가입**
 
 ```json
 // Request
 {
-  "title": "제목",
-  "content": "내용"
+  "username": "ticket_user",
+  "password": "password1234",
+  "nickname": "티켓 사용자",
+  "email": "user@example.com"
 }
 
 // Response 201
 {
-  "id": 1,
-  "title": "제목",
-  "content": "내용",
-  "writer": "홍길동"
+  "userEntityId": 1
+}
+```
+
+**POST `/login` 로그인**
+
+```json
+// Request
+{
+  "username": "ticket_user",
+  "password": "password1234"
+}
+
+// Response 200
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiJ9...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiJ9..."
+}
+```
+
+**GET `/api/concerts/{concertId}/seats` 좌석 조회**
+
+```json
+// Response 200
+[
+  {
+    "id": 1,
+    "status": "AVAILABLE"
+  },
+  {
+    "id": 2,
+    "status": "HELD"
+  }
+]
+```
+
+**GET `/waiting/status` 대기열 상태 조회**
+
+```json
+// Response 200
+{
+  "status": "WAITING",
+  "rank": 12
 }
 ```
 

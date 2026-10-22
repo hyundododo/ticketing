@@ -6,10 +6,6 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api/user': {
-        target: 'http://localhost:8080',
-        rewrite: (path) => path.replace(/^\/api\/user/, '/user'),
-      },
       '/api': 'http://localhost:8080',
       '/login': {
         target: 'http://localhost:8080',

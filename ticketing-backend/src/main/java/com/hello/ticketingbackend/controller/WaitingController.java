@@ -33,10 +33,13 @@ public class WaitingController {
 
     @GetMapping("/status")
     public ResponseEntity<WaitingResponse> status(@AuthenticationPrincipal String userId) {
-        Long rank = waitingService.rank(userId);
+
         if (waitingService.isAllowed(userId)) {
             return ResponseEntity.ok(WaitingResponse.allowed());
-        } else if (rank != null) {
+        }
+
+        Long rank = waitingService.rank(userId);
+        if (rank != null) {
             return ResponseEntity.ok(WaitingResponse.waiting(rank));
         } else {
             return ResponseEntity.ok(WaitingResponse.none());

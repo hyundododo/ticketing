@@ -337,3 +337,11 @@ k6 run -e BASE_URL=http://EC2 IP주소 ticketing-backend/k6/queue-load-test.js
 ![대기열 부하 테스트 결과1](./docs/images/queue-load-test(1).png)
 ![대기열 부하 테스트 결과2](./docs/images/queue-load-test(2).png)
 
+## 트러블 슈팅
+
+### 1. redis 조회 로직 개선
+
+waitingController에서 isAllowed 된 사용자면 rank 조회를 할 필요 없지만 /waiting/status 요청에 병목현상이 생겼습니다.
+![대기열 부하 테스트 결과1](./docs/images/queue-load-test(1).png)
+![대기열 부하 테스트 결과1](./docs/images/queue-load-test(1).png)
+

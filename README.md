@@ -278,9 +278,7 @@ ticketing/
 5. `race_start_skew_ms` 지표로 요청 시작 시점의 편차를 확인합니다.
 
 ```powershell
-k6 run `
-  -e BASE_URL=http://EC2 IP주소 `
-  ticketing-backend/k6/same-seat-test.js
+k6 run -e BASE_URL=http://EC2 IP주소 ticketing-backend/k6/same-seat-test.js
 ```
 
 #### 2. 대기열 및 좌석 선점 부하 테스트
@@ -292,9 +290,7 @@ k6 run `
 5. 대기열 시간 초과, 매진, 서버 오류 및 좌석 홀드 성공·충돌 건수를 확인합니다.
 
 ```powershell
-k6 run `
-  -e BASE_URL=http://EC2 IP주소 `
-  ticketing-backend/k6/queue-load-test.js
+k6 run -e BASE_URL=http://EC2 IP주소 ticketing-backend/k6/queue-load-test.js
 ```
 
 ### 테스트 환경

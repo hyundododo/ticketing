@@ -341,7 +341,17 @@ k6 run -e BASE_URL=http://EC2 IP주소 ticketing-backend/k6/queue-load-test.js
 
 ### 1. redis 조회 로직 개선
 
-waitingController에서 isAllowed 된 사용자면 rank 조회를 할 필요 없지만 /waiting/status 요청에 병목현상이 생겼습니다.
-![대기열 부하 테스트 결과1](./docs/images/queue-load-test(1).png)
-![대기열 부하 테스트 결과1](./docs/images/queue-load-test(1).png)
+waitingController에서 isAllowed 된 사용자면 rank 조회를 할 필요 없지만 isAllowed 확인 전 부터 rank를 조회하여 /waiting/status 요청에 병목현상이 생겼습니다.
+
+### 테스트 결과
+
+| 지표 | 개선 전 | 개선 후 |
+| --- | --- | --- |
+| 상태 조회 `p(95)` | 641.87ms | 341.84ms |
+| 좌석 홀드 `p(95)` | 2.75s | 796.2ms |
+
+<img width="1850" height="282" alt="image" src="https://github.com/user-attachments/assets/d1300663-e2f0-4265-a428-b17b8f185a84" />
+<img width="1852" height="278" alt="image" src="https://github.com/user-attachments/assets/915bb800-e12c-42de-a2bf-2fa9857959f7" />
+
+
 

@@ -3,7 +3,7 @@
 > 공연 예매 시스템
 <!-- 배포했다면 링크, 시연 GIF나 대표 스크린샷을 여기에 넣으세요 -->
 
-![시현 영상](/docs/ticketing test.gif)
+![시현 영상](./docs/demo.gif)
 
 <br>
 

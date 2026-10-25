@@ -55,7 +55,7 @@ public class SeatEntity {
             throw new SeatAlreadyHeldException("이미 선택된 좌석입니다.");
         }
         this.status = SeatStatus.HELD;
-        this.heldUntil = LocalDateTime.now().plusMinutes(1); // 테스트용으로 1분 설정
+        this.heldUntil = LocalDateTime.now().plusMinutes(10);
     }
 
     public void release() {

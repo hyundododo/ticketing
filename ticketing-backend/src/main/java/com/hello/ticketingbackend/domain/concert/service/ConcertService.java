@@ -8,9 +8,9 @@ import com.hello.ticketingbackend.domain.seat.entity.SeatEntity;
 import com.hello.ticketingbackend.domain.seat.repository.SeatRepository;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import com.hello.ticketingbackend.exception.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,8 @@ public class ConcertService {
 
         concertRepository.delete(concertEntity);
     }
-    @Transactional
+
+    @Transactional(readOnly = true)
     public List<ConcertResponse> readConcerts() {
         List<ConcertResponse> list = concertRepository.findAll().stream()
                 .map(ConcertResponse::from)

@@ -3,10 +3,10 @@ package com.hello.ticketingbackend.domain.cart.service;
 import com.hello.ticketingbackend.domain.cart.repository.CartItemRepository;
 import com.hello.ticketingbackend.domain.seat.dto.SeatStatus;
 import com.hello.ticketingbackend.domain.seat.repository.SeatRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;

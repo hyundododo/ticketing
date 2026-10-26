@@ -5,18 +5,16 @@ import com.hello.ticketingbackend.domain.cart.dto.CartResponse;
 import com.hello.ticketingbackend.domain.cart.entity.CartEntity;
 import com.hello.ticketingbackend.domain.cart.entity.CartItemEntity;
 import com.hello.ticketingbackend.domain.cart.repository.CartRepository;
-import com.hello.ticketingbackend.domain.seat.dto.SeatStatus;
 import com.hello.ticketingbackend.domain.seat.entity.SeatEntity;
 import com.hello.ticketingbackend.domain.seat.repository.SeatRepository;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import com.hello.ticketingbackend.domain.user.repository.UserRepository;
 import com.hello.ticketingbackend.exception.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +38,7 @@ public class CartService {
 
         return cartRepository.save(cart).getId();
     }
-    @Transactional
+    @Transactional(readOnly = true)
     public List<CartResponse> readItems(String username) {
         UserEntity user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));

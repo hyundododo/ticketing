@@ -8,9 +8,9 @@ import com.hello.ticketingbackend.util.JwtUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -26,7 +26,7 @@ public class JwtService {
 
         refreshRepository.save(entity);
     }
-    @Transactional
+    @Transactional(readOnly = true)
     public Boolean existsRefresh(String refreshToken) {
         return refreshRepository.existsByRefresh(refreshToken);
     }

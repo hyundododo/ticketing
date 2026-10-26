@@ -9,9 +9,9 @@ import com.hello.ticketingbackend.domain.seat.repository.SeatRepository;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import com.hello.ticketingbackend.domain.user.repository.UserRepository;
 import com.hello.ticketingbackend.exception.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public class SeatService {
 
         return seatRepository.save(seatEntity).getId();
     }
-    @Transactional()
+    @Transactional(readOnly = true)
     public List<SeatResponse> readSeats(Long concertId) {
         List<SeatResponse> list = seatRepository.findByConcertId(concertId).stream()
                 .map(SeatResponse::from)
@@ -66,23 +66,4 @@ public class SeatService {
                 .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
         seat.cancel();
     }
-
-/*
-    @Transactional
-    public Long occupySeat(Long seatId) {
-        SeatEntity seat = seatRepository.findById(seatId)
-                .orElseThrow(IllegalArgumentException::new);
-        seat.occupy();
-        return seatId;
-    }
-    @Transactional
-    public Long vacancySeat(Long seatId) {
-        SeatEntity seat = seatRepository.findById(seatId)
-                .orElseThrow(IllegalArgumentException::new);
-        seat.vacancy();
-        return seatId;
-    }
-*/
-
-
 }

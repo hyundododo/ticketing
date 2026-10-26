@@ -8,7 +8,6 @@ import com.hello.ticketingbackend.domain.user.entity.SocialProviderType;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import com.hello.ticketingbackend.domain.user.entity.UserRoleType;
 import com.hello.ticketingbackend.domain.user.repository.UserRepository;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,6 +23,7 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.file.AccessDeniedException;
 import java.util.List;
@@ -38,12 +38,12 @@ public class UserService extends DefaultOAuth2UserService implements UserDetails
     private final UserRepository userRepository;
     private final JwtService jwtService;
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Boolean existUser(UserRequestDTO dto) {
         return userRepository.existsByUsername(dto.getUsername());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public Long findByUsername(String username) {
         return userRepository.findByUsername(username).get().getId();
     }
@@ -103,7 +103,7 @@ public class UserService extends DefaultOAuth2UserService implements UserDetails
         jwtService.removeRefresh(dto.getUsername());
     }
 
-    @Transactional
+    @Transactional(readOnly = true)
     public UserResponseDTO readUser() {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
 

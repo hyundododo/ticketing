@@ -10,9 +10,9 @@ import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import com.hello.ticketingbackend.domain.user.repository.UserRepository;
 import com.hello.ticketingbackend.exception.EntityNotFoundException;
 import com.hello.ticketingbackend.exception.ForbiddenException;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -42,7 +42,7 @@ public class TicketService {
         }
         ticketRepository.delete(ticket);
     }
-    @Transactional
+    @Transactional(readOnly = true)
     public List<TicketResponse> readTicket(Long userId) {
         return ticketRepository.findByuserId(userId).stream()
                 .map(TicketResponse::from)

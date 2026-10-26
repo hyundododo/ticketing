@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { exchangeSocialLogin, getProfile, login, signup } from '../api/authApi'
+import { deleteProfile, exchangeSocialLogin, getProfile, login, signup, updateProfile } from '../api/authApi'
 
 const accessTokenKey = 'ticketing.accessToken'
 const refreshTokenKey = 'ticketing.refreshToken'
@@ -40,6 +40,17 @@ export function useAuth() {
 
     const register = async (payload) => signup(payload)
 
+    const updateAccount = async (payload) => {
+        await updateProfile(payload)
+        const updatedProfile = await getProfile()
+        setProfile(updatedProfile)
+    }
+
+    const deleteAccount = async () => {
+        await deleteProfile(profile.username)
+        signOut()
+    }
+
     const completeSocialLogin = async () => {
         const tokens = await exchangeSocialLogin()
         localStorage.setItem(accessTokenKey, tokens.accessToken)
@@ -53,5 +64,5 @@ export function useAuth() {
         setProfile(null)
     }
 
-    return { accessToken, profile, loading, error, signIn, register, completeSocialLogin, signOut }
+    return { accessToken, profile, loading, error, signIn, register, updateAccount, deleteAccount, completeSocialLogin, signOut }
 }

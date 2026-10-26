@@ -399,6 +399,26 @@ h1 em {
   gap: 28px;
 }
 
+.profile-edit-form {
+  align-items: end;
+}
+
+.profile-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.profile-actions .dark-button,
+.profile-actions .primary-button {
+  width: auto;
+  margin-top: 0;
+}
+
+.danger-button {
+  color: #b94a48;
+}
+
 .profile-details span {
   display: grid;
   gap: 5px;
@@ -1908,6 +1928,181 @@ footer {
 .profile-avatar {
   background: var(--lime);
   color: var(--white);
+}
+
+.user-page {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.user-page .page-header {
+  align-items: center;
+  padding: 48px 0 28px;
+}
+
+.user-page .page-header h1 {
+  letter-spacing: -.04em;
+}
+
+.user-page .page-header .text-button {
+  padding: 10px 0;
+  color: var(--lime);
+  font-weight: 600;
+}
+
+.profile-card {
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 28px;
+  max-width: none;
+  padding: 32px;
+  border: 0;
+  background: rgba(255, 255, 255, .86);
+  box-shadow: 0 10px 30px rgba(60, 60, 67, .1);
+}
+
+.profile-avatar {
+  width: 76px;
+  height: 76px;
+  background: linear-gradient(145deg, #5ac8fa, #0a84ff);
+  color: var(--white);
+  box-shadow: 0 5px 12px rgba(10, 132, 255, .24);
+  font-size: 30px;
+}
+
+.profile-details {
+  display: block;
+  min-width: 0;
+}
+
+.profile-heading {
+  margin-bottom: 24px;
+}
+
+.profile-heading h2 {
+  margin: 4px 0 6px;
+  letter-spacing: -.035em;
+}
+
+.profile-heading p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+}
+
+.profile-details dl {
+  gap: 0;
+  padding: 0 16px;
+  border-radius: 13px;
+  background: var(--paper);
+}
+
+.profile-details dl div {
+  grid-template-columns: 90px minmax(0, 1fr);
+  align-items: center;
+  min-height: 48px;
+  border-top: 1px solid rgba(60, 60, 67, .12);
+  padding: 0;
+}
+
+.profile-details dl div:first-child {
+  border-top: 0;
+}
+
+.profile-details dd {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.profile-account-actions {
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+  padding-top: 22px;
+  border-top: 1px solid rgba(60, 60, 67, .12);
+}
+
+.profile-account-actions .dark-button {
+  min-height: 42px;
+  padding: 11px 16px;
+  border-radius: 12px;
+  background: var(--lime);
+  justify-content: center;
+  text-align: center;
+}
+
+.profile-account-actions .danger-button {
+  text-align: center;
+}
+
+.profile-edit-form {
+  align-items: stretch;
+}
+
+.profile-form-fields {
+  display: grid;
+  gap: 12px;
+  padding: 16px;
+  border-radius: 13px;
+  background: var(--paper);
+}
+
+.profile-form-fields .field {
+  gap: 6px;
+}
+
+.profile-form-fields .field span {
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.profile-form-fields input {
+  min-height: 44px;
+  border-color: transparent;
+  background: var(--white);
+  box-shadow: inset 0 0 0 1px rgba(60, 60, 67, .12);
+}
+
+.profile-form-fields input:focus {
+  border-color: var(--lime);
+  box-shadow: 0 0 0 3px rgba(10, 132, 255, .16);
+}
+
+.profile-edit-form .profile-actions {
+  justify-content: flex-start;
+  margin-top: 18px;
+}
+
+.profile-edit-form .primary-button {
+  min-height: 44px;
+  padding: 12px 16px;
+  border-radius: 12px;
+}
+
+.profile-edit-form .text-button {
+  padding: 12px 8px;
+}
+
+@media (max-width: 760px) {
+  .user-page .page-header {
+    padding: 34px 0 22px;
+  }
+
+  .profile-card {
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 24px 20px;
+  }
+
+  .profile-avatar {
+    width: 64px;
+    height: 64px;
+    font-size: 25px;
+  }
+
+  .profile-account-actions {
+    justify-content: space-between;
+  }
 }
 
 .admin-panel,

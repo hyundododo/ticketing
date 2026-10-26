@@ -15,6 +15,16 @@ export const getProfile = async () => {
     return data
 }
 
+export const updateProfile = async (payload) => {
+    const { data } = await apiClient.put('/api/user', payload)
+    return data
+}
+
+export const deleteProfile = async (username) => {
+    const { data } = await apiClient.delete('/api/user', { data: { username } })
+    return data
+}
+
 export const exchangeSocialLogin = async () => {
     const { data } = await apiClient.post('/jwt/exchange', {})
     return data

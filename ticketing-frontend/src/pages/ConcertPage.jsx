@@ -21,7 +21,7 @@ function ConcertPage({ onNotice, onCart, onPayment, isAdmin }) {
         if (enteringConcertId) return
         setEnteringConcertId(concert.id)
         try {
-            const response = await enterWaiting()
+            const response = await enterWaiting(concert.id)
             if (response.status === 'ALLOWED') {
                 setSelectedConcert(concert)
             } else if (response.status === 'WAITING') {

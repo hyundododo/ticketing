@@ -11,7 +11,7 @@ function WaitingModal({ concert, initialRank, onAllowed, onClose, onNotice }) {
         let active = true
         const checkStatus = async () => {
             try {
-                const response = await getWaitingStatus()
+                const response = await getWaitingStatus(concert.id)
                 if (!active) return
                 if (response.status === 'ALLOWED') {
                     onAllowed()
@@ -36,7 +36,7 @@ function WaitingModal({ concert, initialRank, onAllowed, onClose, onNotice }) {
         if (leaving) return
         setLeaving(true)
         try {
-            await leaveWaiting()
+            await leaveWaiting(concert.id)
             onClose()
         } catch (requestError) {
             onNotice('error', getErrorMessage(requestError))

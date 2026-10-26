@@ -13,7 +13,7 @@ function SeatPage({ concert, onNotice, onCart, onPayment, onClose }) {
     const [showModal, setShowModal] = useState(false)
     const [submitting, setSubmitting] = useState(false)
     const selectSeat = (seat) => { rememberSeatLabel(seat.id, seat.seatLabel); setSelectedSeat(seat) }
-    const startBooking = async () => { if (!selectedSeat || holding) return; setHolding(true); try { await holdSeat(selectedSeat.id); setShowModal(true) } catch (requestError) { onNotice('error', getErrorMessage(requestError)); reload() } finally { setHolding(false) } }
+    const startBooking = async () => { if (!selectedSeat || holding) return; setHolding(true); try { await holdSeat(concert.id, selectedSeat.id); setShowModal(true) } catch (requestError) { onNotice('error', getErrorMessage(requestError)); reload() } finally { setHolding(false) } }
     const item = selectedSeat && { seatId: selectedSeat.id, seatLabel: selectedSeat.seatLabel, concertId: concert.id, concertName: concert.concertName || concert.name }
     const addToCart = async () => { setSubmitting(true); try { await onCart(item); setShowModal(false); setSelectedSeat(null) } catch (requestError) { onNotice('error', getErrorMessage(requestError)); reload() } finally { setSubmitting(false) } }
     const goToPayment = () => { setShowModal(false); onPayment(item); setSelectedSeat(null) }

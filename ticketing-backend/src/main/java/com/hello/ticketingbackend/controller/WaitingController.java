@@ -16,36 +16,33 @@ public class WaitingController {
     private final WaitingService waitingService;
 
     @PostMapping("/enter")
-    public ResponseEntity<WaitingResponse> enter(@AuthenticationPrincipal String userId) {
-        if (waitingService.isAllowed(userId)) {
+    public ResponseEntity<WaitingResponse> enter(String concertId,@AuthenticationPrincipal String userId) {
+        if (waitingService.isAllowed(concertId, userId)) {
             return ResponseEntity.ok(WaitingResponse.allowed());
         }
-        waitingService.enqueue(userId);
-        Long rank = waitingService.rank(userId);
+        waitingService.enqueue(concertId,userId);
+        Long rank = waitingService.rank(concertId,userId);
         return ResponseEntity.ok(WaitingResponse.waiting(rank));
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Void> leave(@AuthenticationPrincipal String userId) {
-        waitingService.leave(userId);
+    public ResponseEntity<Void> leave(String concertId,@AuthenticationPrincipal String userId) {
+        waitingService.leave(concertId,userId);
         return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/status")
-    public ResponseEntity<WaitingResponse> status(@AuthenticationPrincipal String userId) {
+    public ResponseEntity<WaitingResponse> status(String concertId,@AuthenticationPrincipal String userId) {
 
-        if (waitingService.isAllowed(userId)) {
+        if (waitingService.isAllowed(concertId, userId)) {
             return ResponseEntity.ok(WaitingResponse.allowed());
         }
 
-        Long rank = waitingService.rank(userId);
+        Long rank = waitingService.rank(concertId, userId);
         if (rank != null) {
             return ResponseEntity.ok(WaitingResponse.waiting(rank));
         } else {
             return ResponseEntity.ok(WaitingResponse.none());
         }
     }
-
-
-
 }

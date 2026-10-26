@@ -11,6 +11,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.servlet.HandlerInterceptor;
+import org.springframework.web.servlet.HandlerMapping;
+
+import java.util.Map;
 
 @Component
 @RequiredArgsConstructor
@@ -34,9 +37,14 @@ public class HoldInterceptor implements HandlerInterceptor {
             return false;
         }
 
-        String userId = authentication.getName();
+        @SuppressWarnings("unchecked")
+        Map<String, String> pathVariables = (Map<String, String>)
+                request.getAttribute(HandlerMapping.URI_TEMPLATE_VARIABLES_ATTRIBUTE);
 
-        if (waitingService.isAllowed(userId)) {
+        String userId = authentication.getName();
+        String concertId = pathVariables.get("concertId");
+
+        if (waitingService.isAllowed(concertId, userId)) {
             return true;
         } else {
             response.setStatus(HttpServletResponse.SC_FORBIDDEN);

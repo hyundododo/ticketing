@@ -24,7 +24,7 @@ public class SeatController {
                 .body(seatService.createSeat(request));
     }
 
-    @PostMapping("/api/seats/{seatId}/hold")
+    @PostMapping("/api/concerts/{concertId}/seats/{seatId}/hold")
     public ResponseEntity<Void> holdSeat(@PathVariable Long seatId) {
         seatService.hold(seatId);
         return ResponseEntity.noContent().build();

@@ -20,28 +20,29 @@ public class WaitingService {
         this.redisTemplate = redisTemplate;
     }
 
-    public void enqueue(String userId) {
-        redisTemplate.opsForZSet().addIfAbsent(QUEUE_KEY, userId, System.currentTimeMillis());
+    public void enqueue(String concertId, String userId) {
+        redisTemplate.opsForZSet().addIfAbsent(concertId, userId, System.currentTimeMillis());
     }
 
-    public Long leave(String userId) {
-        return redisTemplate.opsForZSet().remove(QUEUE_KEY, userId);
+    public Long leave(String concertId, String userId) {
+        return redisTemplate.opsForZSet().remove(concertId, userId);
     }
 
-    public Long getQueueSize() {
-        return redisTemplate.opsForZSet().zCard(QUEUE_KEY);
+    public Long getQueueSize(String concertId) {
+        return redisTemplate.opsForZSet().zCard(concertId);
     }
 
-    public Long rank(String userId) {
-        Long rank = redisTemplate.opsForZSet().rank(QUEUE_KEY, userId);
+    public Long rank(String concertId, String userId) {
+        Long rank = redisTemplate.opsForZSet().rank(concertId, userId);
         if (rank == null) {
             return null;
         }
         return ++rank;
     }
 
-    public List<String> popMin(int count) {
-        Set<ZSetOperations.@NonNull TypedTuple<String>> tupleSet = redisTemplate.opsForZSet().popMin(QUEUE_KEY, count);
+    public List<String> popMin(String concertId, int count) {
+        Set<ZSetOperations.@NonNull TypedTuple<String>> tupleSet =
+                redisTemplate.opsForZSet().popMin(concertId, count);
 
         if (tupleSet == null) {
             return List.of();
@@ -53,17 +54,17 @@ public class WaitingService {
                 .toList();
     }
 
-    private String entryKey(String userId) {
-        return "entry:" + userId;
+    private String entryKey(String concertId, String userId) {
+        return "entry:" + concertId + ":" + userId;
     }
 
-    public void allowUser(String userId) {
-        redisTemplate.opsForValue().set(entryKey(userId),
+    public void allowUser(String concertId,String userId) {
+        redisTemplate.opsForValue().set(entryKey(concertId,userId),
                 "1",Duration.ofSeconds(ALLOW_TTL_SECONDS));
     }
 
-    public boolean isAllowed(String userId) {
-        return Boolean.TRUE.equals(redisTemplate.hasKey(entryKey(userId)));
+    public boolean isAllowed(String concertId,String userId) {
+        return Boolean.TRUE.equals(redisTemplate.hasKey(entryKey(concertId,userId)));
     }
 
 }

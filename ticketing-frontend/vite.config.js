@@ -7,6 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': 'http://localhost:8080',
+      '/confirm': 'http://localhost:8080',
       '/login': {
         target: 'http://localhost:8080',
         bypass: (req) => {

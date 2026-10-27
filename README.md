@@ -52,6 +52,18 @@
 - 좌석 홀드, 확정, 취소 처리
 - 장바구니에 좌석 추가 및 조회
 - 예매 티켓 생성, 조회, 취소
+- 토스페이먼츠 결제위젯 결제 및 서버 승인
+
+### 토스페이먼츠 결제 설정
+
+프론트엔드 `ticketing-frontend/.env`에 토스 클라이언트 키를 설정하고, 백엔드 실행 환경에 토스 시크릿 키를 설정해야 합니다.
+
+```text
+VITE_TOSS_CLIENT_KEY=발급받은_클라이언트_키
+TOSS_SECRET_KEY=발급받은_시크릿_키
+```
+
+결제 금액은 현재 좌석 1개당 50,000원으로 서버에서 계산합니다. 결제 승인 성공 후에만 티켓이 생성됩니다.
 
 ### 대기열
 - Redis 기반 대기열 등록 및 퇴장
@@ -354,6 +366,5 @@ waitingController에서 isAllowed 된 사용자면 rank 조회를 할 필요 없
 
 <img width="1850" height="282" alt="image" src="https://github.com/user-attachments/assets/d1300663-e2f0-4265-a428-b17b8f185a84" />
 <img width="1852" height="278" alt="image" src="https://github.com/user-attachments/assets/915bb800-e12c-42de-a2bf-2fa9857959f7" />
-
 
 

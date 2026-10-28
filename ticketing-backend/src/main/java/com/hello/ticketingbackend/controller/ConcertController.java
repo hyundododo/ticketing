@@ -35,4 +35,11 @@ public class ConcertController {
     public ResponseEntity<List<ConcertResponse>> readConcerts() {
         return ResponseEntity.ok().body(concertService.readConcerts());
     }
+
+    @GetMapping("/api/concerts/{concertId}")
+    public ResponseEntity<ConcertResponse> readConcert(@PathVariable Long concertId) {
+        return ResponseEntity.ok().body(concertService.readConcert(concertId));
+    }
+
+
 }

@@ -1,5 +1,6 @@
 package com.hello.ticketingbackend.controller;
 
+import com.hello.ticketingbackend.domain.seat.service.SeatService;
 import jakarta.servlet.http.HttpServletRequest;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;

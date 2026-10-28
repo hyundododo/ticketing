@@ -27,7 +27,16 @@ public class ConcertService {
         //admin 권한검증 로직
         List<SeatEntity> seats = new ArrayList<>();
 
-        ConcertEntity concertEntity = new ConcertEntity(request.getConcertName());
+        ConcertEntity concertEntity = ConcertEntity.builder()
+                .concertName(request.getConcertName())
+                .place(request.getPlace())
+                .concertStatus(request.getConcertStatus())
+                .bookingOpenAt(request.getBookingOpenAt())
+                .description(request.getDescription())
+                .posterUrl(request.getPosterUrl())
+                .build();
+
+
         ConcertEntity savedConcert = concertRepository.save(concertEntity);
         for (int i = 0; i < request.getSeatCount(); i++) {
             seats.add(new SeatEntity(savedConcert));
@@ -53,5 +62,12 @@ public class ConcertService {
                 .toList();
 
         return list;
+    }
+
+    @Transactional(readOnly = true)
+    public ConcertResponse readConcert(Long concertId) {
+        ConcertEntity concertEntity = concertRepository.findById(concertId)
+                .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
+        return ConcertResponse.from(concertEntity);
     }
 }

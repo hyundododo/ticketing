@@ -50,10 +50,15 @@ function Checkout({ items, onNotice, onBack }) {
 
     const pay = async () => {
         if (!widgets || !ready || processing) return
+        const seatIds = items.map((item) => item?.seatId).filter((seatId) => seatId != null)
+        if (seatIds.length !== items.length || !seatIds.length) {
+            onNotice('error', '선택한 좌석 정보를 확인할 수 없습니다. 좌석을 다시 선택해주세요.')
+            return
+        }
         setProcessing(true)
         try {
             const orderId = crypto.randomUUID()
-            sessionStorage.setItem('ticketing.pending-seat-ids', JSON.stringify(items.map((item) => item.seatId)))
+            sessionStorage.setItem('ticketing.pending-seat-ids', JSON.stringify(seatIds))
             await widgets.requestPayment({
                 orderId,
                 orderName: items.length === 1 ? '공연 좌석 1개' : `공연 좌석 ${items.length}개`,
@@ -68,10 +73,7 @@ function Checkout({ items, onNotice, onBack }) {
 
     return <section className="payment-section ios-payment-page"><div className="payment-card">
         <div className="payment-header">
-            <div className="payment-icon" aria-hidden="true"></div>
-            <span className="eyebrow">SECURE CHECKOUT</span>
             <h1>결제를<br /><em>완료해주세요.</em></h1>
-            <p className="payment-subtitle">선택하신 좌석을 안전하게 예약합니다.</p>
         </div>
         <div className="payment-order-card">
             <div className="payment-order-title"><span>주문 내역</span><strong>{items.length}개 좌석</strong></div>
@@ -79,13 +81,11 @@ function Checkout({ items, onNotice, onBack }) {
             <div className="payment-total"><span>총 결제 금액</span><strong>{amount.toLocaleString()}원</strong></div>
         </div>
         <div className="payment-widget-shell">
-            <div className="payment-widget-label">결제 수단</div>
             <div id="payment-method" />
             <div id="agreement" />
         </div>
         <button className="payment-submit-button" disabled={!ready || processing} onClick={pay}>{processing ? '결제창을 준비 중...' : `${amount.toLocaleString()}원 결제하기`}<span>›</span></button>
         <button className="payment-back-button" onClick={onBack}>장바구니로 돌아가기</button>
-        <p className="payment-secure-note"><span>􀎡</span> 토스페이먼츠로 안전하게 결제됩니다.</p>
     </div></section>
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { apiClient, getErrorMessage } from './shared/api/axiosClient'
-import { createTicket, removePurchasedCartItem } from './features/seat/api/ticketApi'
+import { confirmSeat, createTicket, removePurchasedCartItem } from './features/seat/api/ticketApi'
 
 export function SuccessPage() {
     const navigate = useNavigate()
@@ -21,6 +21,7 @@ export function SuccessPage() {
                 const seatIds = JSON.parse(sessionStorage.getItem('ticketing.pending-seat-ids') || '[]')
                 sessionStorage.removeItem('ticketing.pending-seat-ids')
                 for (const seatId of seatIds) {
+                    await confirmSeat(seatId)
                     await createTicket(seatId)
                     await removePurchasedCartItem(seatId)
                 }

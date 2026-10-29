@@ -41,13 +41,17 @@ public class TicketController {
     @GetMapping("/api/tickets")
     public ResponseEntity<List<TicketResponse>> readTickets(@AuthenticationPrincipal String username) {
         Long userId = userService.findByUsername(username);
-        return ResponseEntity.ok().body(ticketService.readTicket(userId));
+        return ResponseEntity.ok().body(ticketService.readTickets(userId));
     }
 
     @DeleteMapping("/api/tickets/{ticketId}")
     public ResponseEntity<Void> deleteTicket(@PathVariable Long ticketId,
-                                             @AuthenticationPrincipal String username) throws IllegalAccessException {
+                                             @AuthenticationPrincipal String username){
+        Long seatId = ticketService.readTicket(ticketId).getSeatId();
+
         ticketService.deleteTicket(ticketId,username);
+        seatService.cancel(seatId);
+
         return ResponseEntity.noContent().build();
     }
 }

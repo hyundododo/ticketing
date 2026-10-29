@@ -43,10 +43,17 @@ public class TicketService {
         ticketRepository.delete(ticket);
     }
     @Transactional(readOnly = true)
-    public List<TicketResponse> readTicket(Long userId) {
+    public List<TicketResponse> readTickets(Long userId) {
         return ticketRepository.findByuserId(userId).stream()
                 .map(TicketResponse::from)
                 .toList();
+    }
+
+    @Transactional(readOnly = true)
+    public TicketResponse readTicket(Long ticketId) {
+        return ticketRepository.findById(ticketId)
+                .map(TicketResponse::from)
+                .orElseThrow(() -> new EntityNotFoundException("티켓을 찾을 수 없습니다."));
     }
 
 

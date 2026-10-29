@@ -30,7 +30,7 @@ function InvalidLoginPath() {
 
 function AuthenticatedApp() {
     const { accessToken, profile, loading: authLoading, signIn, register, updateAccount, deleteAccount, completeSocialLogin, signOut } = useAuth()
-    const { items, add } = useCart(Boolean(accessToken && profile))
+    const { items } = useCart(Boolean(accessToken && profile))
     const [notice, setNotice] = useState(null)
     const [paymentItems, setPaymentItems] = useState([])
     const navigate = useNavigate()
@@ -43,12 +43,8 @@ function AuthenticatedApp() {
     if (!accessToken) return <AppLayout notice={notice} setNotice={setNotice}><AuthPage onSignIn={signIn} onRegister={register} onError={(message) => notify('error', message)} /></AppLayout>
     const cartItems = paymentItems.length ? paymentItems : items
     const navigateToPayment = (selectedItems) => { setPaymentItems(selectedItems); navigate('/payment') }
-    const addToCartAndNavigate = async (selectedItems) => {
-        const nextItems = Array.isArray(selectedItems) ? selectedItems : [selectedItems]
-        for (const item of nextItems) await add(item)
-        navigate('/cart')
-    }
-    const page = <Routes><Route path="/" element={<ConcertPage isAdmin={isAdminToken(accessToken)} onNotice={notify} onCart={addToCartAndNavigate} onPayment={navigateToPayment} />} /><Route path="/cart" element={<CartPage onNotice={notify} onPay={navigateToPayment} />} /><Route path="/payment" element={<Checkout items={cartItems} onNotice={notify} onBack={() => navigate('/cart')} />} /><Route path="/tickets" element={<TicketsPage concerts={[]} onNotice={notify} />} /><Route path="/user" element={<UserPage profile={profile} onBack={() => navigate('/')} onNotice={notify} onUpdateProfile={updateAccount} onDeleteAccount={async () => { await deleteAccount(); navigate('/') }} />} /><Route path="*" element={<Navigate to="/" replace />} /></Routes>
+    const navigateToCart = () => navigate('/cart')
+    const page = <Routes><Route path="/" element={<ConcertPage isAdmin={isAdminToken(accessToken)} onNotice={notify} onCart={navigateToCart} />} /><Route path="/cart" element={<CartPage onNotice={notify} onPay={navigateToPayment} />} /><Route path="/payment" element={<Checkout items={cartItems} onNotice={notify} onBack={() => navigate('/cart')} />} /><Route path="/tickets" element={<TicketsPage concerts={[]} onNotice={notify} />} /><Route path="/user" element={<UserPage profile={profile} onBack={() => navigate('/')} onNotice={notify} onUpdateProfile={updateAccount} onDeleteAccount={async () => { await deleteAccount(); navigate('/') }} />} /><Route path="*" element={<Navigate to="/" replace />} /></Routes>
     const appLayoutProps = { notice, setNotice, profile, onProfile: () => navigate('/user'), onSignOut: () => { signOut(); navigate('/') } }
     return <AppLayout {...appLayoutProps}><nav className="page-actions app-navigation" aria-label="주요 메뉴"><button className={`text-button ${location.pathname === '/' ? 'active' : ''}`} onClick={() => navigate('/')}>공연 목록</button><button className={`text-button ${location.pathname === '/cart' ? 'active' : ''}`} onClick={() => navigate('/cart')}>장바구니</button><button className={`text-button ${location.pathname === '/tickets' ? 'active' : ''}`} onClick={() => navigate('/tickets')}>나의 티켓</button></nav>{page}</AppLayout>
 }

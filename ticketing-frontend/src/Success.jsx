@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import { apiClient, getErrorMessage } from './shared/api/axiosClient'
-import { confirmSeat, createTicket, removePurchasedCartItem } from './features/seat/api/ticketApi'
+import { createTicket, removePurchasedCartItem } from './features/seat/api/ticketApi'
 
 export function SuccessPage() {
     const navigate = useNavigate()
@@ -13,15 +13,18 @@ export function SuccessPage() {
         async function confirm() {
             try {
                 const amount = Number(searchParams.get('amount'))
+                const seatIds = JSON.parse(sessionStorage.getItem('ticketing.pending-seat-ids') || '[]')
+                if (!Array.isArray(seatIds) || !seatIds.length) {
+                    throw new Error('결제할 좌석 정보를 찾을 수 없습니다.')
+                }
                 await apiClient.post('/confirm', {
                     orderId: searchParams.get('orderId'),
                     amount: String(amount),
                     paymentKey: searchParams.get('paymentKey'),
+                    seatIds,
                 })
-                const seatIds = JSON.parse(sessionStorage.getItem('ticketing.pending-seat-ids') || '[]')
                 sessionStorage.removeItem('ticketing.pending-seat-ids')
                 for (const seatId of seatIds) {
-                    await confirmSeat(seatId)
                     await createTicket(seatId)
                     await removePurchasedCartItem(seatId)
                 }

@@ -2,6 +2,7 @@ package com.hello.ticketingbackend.controller;
 
 import com.hello.ticketingbackend.domain.seat.service.SeatService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
 import net.minidev.json.parser.ParseException;
@@ -10,22 +11,22 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
 
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
+import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
 public class WidgetController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    private final SeatService seatService;
 
     @Value("${WIDGET_SECRET_KEY}")
     private String WIDGET_SECRET_KEY;
@@ -37,12 +38,17 @@ public class WidgetController {
         String orderId;
         String amount;
         String paymentKey;
+        List<Long> seatIds;
+
         try {
             // 클라이언트에서 받은 JSON 요청 바디입니다.
             JSONObject requestData = (JSONObject) parser.parse(jsonBody);
             paymentKey = (String) requestData.get("paymentKey");
             orderId = (String) requestData.get("orderId");
             amount = (String) requestData.get("amount");
+            seatIds = ((List<?>) requestData.get("seatIds")).stream()
+                    .map(s -> ((Number) s).longValue())
+                    .toList();
         } catch (ParseException e) {
             throw new RuntimeException(e);
         };
@@ -75,6 +81,9 @@ public class WidgetController {
         InputStream responseStream = isSuccess ? connection.getInputStream() : connection.getErrorStream();
 
         // 결제 성공 및 실패 비즈니스 로직을 구현하세요.
+        for (Long seatId : seatIds) {
+            seatService.confirm(seatId);
+        } // held -> sold 변경
         Reader reader = new InputStreamReader(responseStream, StandardCharsets.UTF_8);
         JSONObject jsonObject = (JSONObject) parser.parse(reader);
         responseStream.close();

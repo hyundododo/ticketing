@@ -1,5 +1,6 @@
 package com.hello.ticketingbackend.domain.cart.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter

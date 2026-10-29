@@ -1,5 +1,7 @@
 package com.hello.ticketingbackend.controller;
 
+import com.hello.ticketingbackend.domain.cart.dto.CartRequest;
+import com.hello.ticketingbackend.domain.cart.service.CartService;
 import com.hello.ticketingbackend.domain.concert.entity.ConcertEntity;
 import com.hello.ticketingbackend.domain.seat.dto.SeatRequest;
 import com.hello.ticketingbackend.domain.seat.dto.SeatResponse;
@@ -7,6 +9,7 @@ import com.hello.ticketingbackend.domain.seat.entity.SeatEntity;
 import com.hello.ticketingbackend.domain.seat.service.SeatService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -17,6 +20,7 @@ import java.util.List;
 public class SeatController {
 
     private final SeatService seatService;
+    private final CartService cartService;
 
     @PostMapping("/api/seats")
     public ResponseEntity<Long> createSeat(@RequestBody SeatRequest request) {
@@ -25,8 +29,11 @@ public class SeatController {
     }
 
     @PostMapping("/api/concerts/{concertId}/seats/{seatId}/hold")
-    public ResponseEntity<Void> holdSeat(@PathVariable Long seatId) {
+    public ResponseEntity<Void> holdSeat(@AuthenticationPrincipal String username,
+                                         @RequestBody CartRequest request,
+                                         @PathVariable Long seatId) {
         seatService.hold(seatId);
+        cartService.addItem(request, username);
         return ResponseEntity.noContent().build();
     }
 

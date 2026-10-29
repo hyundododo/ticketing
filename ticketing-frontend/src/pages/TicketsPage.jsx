@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getErrorMessage } from '../shared/api/axiosClient'
-import { cancelSeat, deleteTicket, getTickets } from '../features/seat/api/ticketApi'
+import { deleteTicket, getTickets } from '../features/seat/api/ticketApi'
 import { getRememberedSeatLabel } from '../features/seat/seatLabel'
 
 function TicketsPage({ concerts, onNotice }) {
@@ -14,7 +14,6 @@ function TicketsPage({ concerts, onNotice }) {
         setDeletingTicketId(ticket.id)
         try {
             await deleteTicket(ticket.id)
-            await cancelSeat(ticket.seatId)
             setTickets((currentTickets) => currentTickets.filter((currentTicket) => currentTicket.id !== ticket.id))
             onNotice('success', '티켓이 삭제되고 좌석이 취소되었습니다.')
         } catch (requestError) {

@@ -3,13 +3,12 @@ import { useEffect, useMemo, useState } from 'react'
 import { getErrorMessage } from './shared/api/axiosClient'
 
 const clientKey = import.meta.env.VITE_TOSS_CLIENT_KEY
-const PRICE_PER_SEAT = 50_000
 
 function Checkout({ items, onNotice, onBack }) {
     const [widgets, setWidgets] = useState(null)
     const [ready, setReady] = useState(false)
     const [processing, setProcessing] = useState(false)
-    const amount = useMemo(() => items.length * PRICE_PER_SEAT, [items.length])
+    const amount = useMemo(() => items.reduce((total, item) => total + Number(item.price || 0), 0), [items])
 
     useEffect(() => {
         let mounted = true
@@ -77,7 +76,7 @@ function Checkout({ items, onNotice, onBack }) {
         </div>
         <div className="payment-order-card">
             <div className="payment-order-title"><span>주문 내역</span><strong>{items.length}개 좌석</strong></div>
-            <div className="payment-items">{items.map((item) => <div key={item.seatId}><span>{item.concertName || '공연 좌석'}</span><strong>좌석 {item.seatLabel || item.seatId}</strong></div>)}</div>
+            <div className="payment-items">{items.map((item) => <div key={item.seatId}><span>{item.concertName || '공연 좌석'} · 좌석 {item.seatLabel || item.seatId}</span><strong>{Number(item.price || 0).toLocaleString()}원</strong></div>)}</div>
             <div className="payment-total"><span>총 결제 금액</span><strong>{amount.toLocaleString()}원</strong></div>
         </div>
         <div className="payment-widget-shell">

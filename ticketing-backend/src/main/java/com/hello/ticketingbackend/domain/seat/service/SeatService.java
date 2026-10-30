@@ -4,6 +4,7 @@ import com.hello.ticketingbackend.domain.concert.entity.ConcertEntity;
 import com.hello.ticketingbackend.domain.concert.repository.ConcertRepository;
 import com.hello.ticketingbackend.domain.seat.dto.SeatRequest;
 import com.hello.ticketingbackend.domain.seat.dto.SeatResponse;
+import com.hello.ticketingbackend.domain.seat.dto.SeatStatus;
 import com.hello.ticketingbackend.domain.seat.entity.SeatEntity;
 import com.hello.ticketingbackend.domain.seat.repository.SeatRepository;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
@@ -27,8 +28,11 @@ public class SeatService {
         ConcertEntity concertEntity = concertRepository.findById(request.getConcertId())
                 .orElseThrow(() -> new EntityNotFoundException("entity를 찾을 수 없습니다."));
 
-        SeatEntity seatEntity = new SeatEntity(concertEntity);
-
+        SeatEntity seatEntity = SeatEntity.builder()
+                .concert(concertEntity)
+                .price(request.getPrice())
+                .status(SeatStatus.AVAILABLE)
+                .build();
 
         return seatRepository.save(seatEntity).getId();
     }

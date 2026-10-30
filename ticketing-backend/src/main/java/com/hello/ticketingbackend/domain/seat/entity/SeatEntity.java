@@ -6,10 +6,7 @@ import com.hello.ticketingbackend.domain.ticket.entity.TicketEntity;
 import com.hello.ticketingbackend.domain.user.entity.UserEntity;
 import com.hello.ticketingbackend.exception.SeatAlreadyHeldException;
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
@@ -18,7 +15,8 @@ import java.util.List;
 
 @Entity
 @Getter
-@Setter
+@Builder
+@AllArgsConstructor
 @EntityListeners(AuditingEntityListener.class)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class SeatEntity {
@@ -30,22 +28,24 @@ public class SeatEntity {
     @JoinColumn(name = "concert_id")
     private ConcertEntity concert;
 
-
-/*    @OneToOne(mappedBy = "seat", cascade = CascadeType.REMOVE)
-    private TicketEntity ticket;*/
-
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private SeatStatus status = SeatStatus.AVAILABLE;
+    private SeatStatus status;
 
-    @Column
     private LocalDateTime heldUntil;
 
-    //    private Boolean isOccupied = false;
+    @Column(nullable = false)
+    private int price;
 
     public SeatEntity(ConcertEntity concert) {
         this.concert = concert;
     }
+
+    /* @OneToOne(mappedBy = "seat", cascade = CascadeType.REMOVE)
+    private TicketEntity ticket;*/
+
+    //    private Boolean isOccupied = false;
+
 
     public void hold() {
         boolean isExpired = this.status == SeatStatus.HELD

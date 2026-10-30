@@ -7,6 +7,7 @@ import lombok.Getter;
 public class SeatResponse {
     private Long id;
     private SeatStatus status;
+    private int price;
 
     public SeatResponse(Long id, SeatStatus status) {
         this.id = id;

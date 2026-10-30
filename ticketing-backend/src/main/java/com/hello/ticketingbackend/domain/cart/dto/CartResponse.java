@@ -17,12 +17,14 @@ public class CartResponse {
     private Long cartId;
     private Long cartItemId;
     private Long seatId;
+    private int price;
     private LocalDateTime heldUntil;
 
-    public CartResponse(Long cartId, Long cartItemId, Long seatId, LocalDateTime heldUntil) {
+    public CartResponse(Long cartId, Long cartItemId, Long seatId, int price, LocalDateTime heldUntil) {
         this.cartId = cartId;
         this.cartItemId = cartItemId;
         this.seatId = seatId;
+        this.price = price;
         this.heldUntil = heldUntil;
     }
 
@@ -31,6 +33,7 @@ public class CartResponse {
                 entity.getId(),
                 entity.getCart().getId(),
                 entity.getSeat().getId(),
+                entity.getSeat().getPrice(),
                 entity.getSeat().getHeldUntil()
         );
     }

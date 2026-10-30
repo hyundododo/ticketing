@@ -1,6 +1,7 @@
 package com.hello.ticketingbackend.domain.concert.dto;
 
 import com.hello.ticketingbackend.domain.concert.entity.ConcertEntity;
+import com.hello.ticketingbackend.domain.seat.entity.SeatEntity;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
@@ -17,9 +18,11 @@ public class ConcertResponse {
     private ConcertStatus concertStatus;
     private LocalDateTime bookingOpenAt;
 
+    private int price;
+
 
     public ConcertResponse(Long id, String concertName, String place, String description,
-                           String posterUrl, ConcertStatus concertStatus, LocalDateTime bookingOpenAt) {
+                           String posterUrl, ConcertStatus concertStatus, LocalDateTime bookingOpenAt, int price) {
         this.id = id;
         this.concertName = concertName;
         this.place = place;
@@ -27,6 +30,7 @@ public class ConcertResponse {
         this.posterUrl = posterUrl;
         this.concertStatus = concertStatus;
         this.bookingOpenAt = bookingOpenAt;
+        this.price = price;
     }
 
     public static ConcertResponse from(ConcertEntity entity) {
@@ -37,7 +41,10 @@ public class ConcertResponse {
                 entity.getDescription(),
                 entity.getPosterUrl(),
                 entity.getConcertStatus(),
-                entity.getBookingOpenAt()
+                entity.getBookingOpenAt(),
+                entity.getSeats().stream()
+                        .map(SeatEntity::getPrice)
+                        .toList().getFirst() // 같은 콘서트에서 좌석 가격이 다 같음
         );
     }
 }

@@ -98,6 +98,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/error").permitAll()
+                        .requestMatchers("/mail/**").permitAll() // 추후에 삭제 (테스트용)
                         .requestMatchers("/jwt/exchange", "/jwt/refresh",
                                 "/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/v3/api-docs.yaml").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/user/exist", "/api/user").permitAll()
